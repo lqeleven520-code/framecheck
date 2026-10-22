@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eleven-framecheck"
-version = "0.1.0"
+version = "0.1.1"
 description = "Local video comparison with frame-level evidence and offline HTML reports"
 readme = "README.md"
 requires-python = ">=3.10"

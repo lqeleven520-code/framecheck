@@ -12,6 +12,11 @@ from .media import Cancelled, MediaError, find_tools, process_options
 
 
 def main(argv=None) -> int:
+    # Windows redirected output can use a legacy code page. Keep its encoding,
+    # but escape unsupported characters instead of failing a successful check.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(errors="backslashreplace")
     parser = argparse.ArgumentParser(description="FrameCheck: local video comparison / 本地视频对比质检")
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)

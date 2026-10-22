@@ -4,7 +4,7 @@
 
 Compare two SDR videos frame by frame, find visual and timing differences, and share an offline HTML report. Includes a Chinese desktop interface, a CLI, per-frame CSV and JSON results. No account, API key, uploads or telemetry.
 
-**Status:** v0.1.0, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
+**Status:** v0.1.1, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
 
 ## 安装与使用
 
@@ -32,7 +32,7 @@ framecheck doctor
 framecheck gui
 ```
 
-亦可在虚拟环境中直接安装 Release 附带的 `.whl` 文件：`python -m pip install 路径/eleven_framecheck-0.1.0-py3-none-any.whl`。
+亦可在虚拟环境中直接安装 Release 附带的 `.whl` 文件：`python -m pip install 路径/eleven_framecheck-0.1.1-py3-none-any.whl`。
 
 macOS 可使用 `brew install ffmpeg`；Debian/Ubuntu 可使用 `sudo apt install ffmpeg python3-tk python3-venv`。桌面界面需要 Python 的 Tk 支持；CLI 不需要显示环境。
 

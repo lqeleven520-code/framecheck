@@ -1,5 +1,8 @@
 import csv
 import json
+import os
+import subprocess
+import sys
 import threading
 
 import numpy as np
@@ -9,6 +12,30 @@ from framecheck.cli import main
 from framecheck.compare import Options, compare, pixel_metrics
 from framecheck.media import Cancelled, MediaError, find_tools
 from framecheck.report import write_report
+
+
+def test_doctor_succeeds_with_legacy_pipe_encoding(ffmpeg):
+    result = subprocess.run(
+        [sys.executable, "-m", "framecheck", "doctor"],
+        env={**os.environ, "PYTHONIOENCODING": "cp1252:strict"},
+        capture_output=True, timeout=30, check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert b"Ready" in result.stdout
+
+
+def test_cli_json_preserves_unicode_paths_with_legacy_encoding(make_video, tmp_path):
+    source = make_video(name="中文 视频.mkv")
+    output = tmp_path / "中文 报告"
+    result = subprocess.run(
+        [sys.executable, "-m", "framecheck", "compare", str(source), str(source), "-o", str(output)],
+        env={**os.environ, "PYTHONIOENCODING": "cp1252:strict"},
+        capture_output=True, timeout=30, check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    data = json.loads(result.stdout.decode("cp1252"))
+    assert data["status"] == "PASS"
+    assert data["report"] == str(output.resolve() / "report.html")
 
 
 def test_one_channel_delta_counts_as_changed_pixel():
