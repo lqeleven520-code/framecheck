@@ -1,0 +1,14 @@
+[
+  {
+    "name": "compare_videos.py",
+    "sha256": "468d0c051b95c2a54671e76fe0ba99e2b87a5921b8f07e72dfe544bdb11b5d04",
+    "date": "2026-10-22",
+    "status": "User-supplied local source; original left unchanged"
+  },
+  {
+    "name": "verify_frame_sequence.py",
+    "sha256": "4eca227aa800b4473d610c0ee1a12f806304eede46f914c77ea961442a6e440e",
+    "date": "2026-10-22",
+    "status": "User-supplied local source; original left unchanged"
+  }
+]

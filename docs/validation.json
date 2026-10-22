@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-22",
+  "version": "0.1.0",
+  "platform": "Windows 11 x64",
+  "python": "3.12.10",
+  "ffmpeg": "8.1.2",
+  "pytest": {
+    "passed": 27,
+    "failed": 0
+  },
+  "ruff": "passed",
+  "clean_wheel_install": "passed; identical 24-frame synthetic video compared",
+  "frozen_windows_bundle": {
+    "engine": "PASS",
+    "gui_worker": "PASS",
+    "frames": 4,
+    "synthetic_media_only": true
+  },
+  "report_local_assets": "all resolve; HTML parsed; visual browser inspection unavailable",
+  "macos_linux_ci": "configured, not yet run",
+  "independent_user_adoption": "not established",
+  "original_local_scripts": "both SHA-256 fingerprints unchanged"
+}

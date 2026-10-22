@@ -1,0 +1,6 @@
+include LICENSE README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md PROVENANCE.md THIRD_PARTY_NOTICES.md
+recursive-include docs *.md *.json
+recursive-include tests *.py
+recursive-include examples *.py
+recursive-include scripts *.py
+recursive-include third_party *

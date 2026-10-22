@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eleven-framecheck"
+version = "0.1.0"
+description = "Local video comparison with frame-level evidence and offline HTML reports"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Eleven"}]
+dependencies = ["numpy>=1.26,<3", "Pillow>=10.4,<13"]
+keywords = ["video", "ffmpeg", "comparison", "quality-assurance", "offline"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Video",
+  "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "build>=1.2,<2", "ruff>=0.9,<1"]
+bundle = ["pyinstaller>=6.10,<7"]
+
+[project.scripts]
+framecheck = "framecheck.cli:main"
+
+[project.gui-scripts]
+framecheck-gui = "framecheck.gui:main"
+
+[project.urls]
+Repository = "https://github.com/lqeleven520-code/framecheck"
+Issues = "https://github.com/lqeleven520-code/framecheck/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
