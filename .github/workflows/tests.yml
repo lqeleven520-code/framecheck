@@ -1,5 +1,8 @@
 name: tests
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
 permissions:
   contents: read
 jobs:
@@ -7,7 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # Keep macOS coverage on Intel while the hosted ARM pool is capacity-constrained.
+        os: [ubuntu-latest, windows-latest, macos-15-intel]
         python: ['3.10', '3.12']
     runs-on: ${{ matrix.os }}
     steps:
