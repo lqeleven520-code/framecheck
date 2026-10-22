@@ -41,6 +41,16 @@ def run(output: Path) -> int:
         gui_result = json.loads((app.last_report.parent / "result.json").read_text(encoding="utf-8"))
         if gui_result["status"] != "PASS":
             raise RuntimeError("Frozen GUI comparison did not pass.")
+        app.start_demo()
+        deadline = time.monotonic() + 30
+        while app.running and time.monotonic() < deadline:
+            root.update()
+            time.sleep(0.01)
+        if app.running or not app.last_report or not app.last_report.exists():
+            raise RuntimeError("Frozen GUI demo did not finish.")
+        demo_result = json.loads((app.last_report.parent / "result.json").read_text(encoding="utf-8"))
+        if demo_result["status"] != "FAIL" or demo_result["summary"]["compared_frames"] != 24:
+            raise RuntimeError("Frozen GUI demo did not show the expected difference.")
     finally:
         app.cancel_event.set()
         if hasattr(app, "worker"):
@@ -48,6 +58,7 @@ def run(output: Path) -> int:
         root.after_cancel(app.poll_id)
         root.destroy()
     (output / "self-test.json").write_text(json.dumps({"engine": "PASS", "gui_worker": "PASS",
-                                                     "frames": 4, "synthetic_media_only": True}, indent=2)
+                                                     "frames": 4, "gui_demo": "PASS", "demo_frames": 24,
+                                                     "synthetic_media_only": True}, indent=2)
                                           + "\n", encoding="utf-8")
     return 0

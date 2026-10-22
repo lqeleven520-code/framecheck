@@ -8,6 +8,7 @@ import queue
 import re
 import shutil
 import subprocess
+import sys
 import threading
 from collections import deque
 from fractions import Fraction
@@ -28,16 +29,60 @@ def process_options() -> dict:
     return {"creationflags": subprocess.CREATE_NO_WINDOW} if os.name == "nt" else {}
 
 
+def _additional_ffmpeg_candidates() -> list[Path]:
+    """Check explicit portable-app and Windows WinGet locations, never scan drives."""
+    candidates = []
+    if getattr(sys, "frozen", False):
+        app = Path(sys.executable).resolve().parent
+        suffix = ".exe" if os.name == "nt" else ""
+        candidates.extend(folder / ("ffmpeg" + suffix)
+                          for folder in (app / "ffmpeg" / "bin", app / "ffmpeg", app / "bin"))
+    local = os.environ.get("LOCALAPPDATA") if os.name == "nt" else None
+    if local:
+        winget = Path(local) / "Microsoft" / "WinGet"
+        candidates.append(winget / "Links" / "ffmpeg.exe")
+        try:
+            for package in sorted((winget / "Packages").glob("Gyan.FFmpeg_Microsoft.Winget.Source_*")):
+                candidates.extend(sorted(package.glob("ffmpeg-*/bin/ffmpeg.exe"), reverse=True))
+        except OSError:
+            pass  # An inaccessible optional location does not hide valid PATH tools.
+    return candidates
+
+
 def find_tools(ffmpeg: str | None = None) -> tuple[str, str]:
     override = ffmpeg or os.environ.get("FRAMECHECK_FFMPEG")
-    candidate = str(Path(override).expanduser().resolve()) if override else shutil.which("ffmpeg")
-    if not candidate or not Path(candidate).is_file():
+    if override:
+        candidates = [Path(override).expanduser().resolve()]
+    else:
+        on_path = shutil.which("ffmpeg")
+        candidates = ([Path(on_path)] if on_path else []) + _additional_ffmpeg_candidates()
+    found_decoder = False
+    for candidate in candidates:
+        if not candidate.is_file():
+            continue
+        found_decoder = True
+        sibling = candidate.with_name("ffprobe.exe" if os.name == "nt" else "ffprobe")
+        probe = str(sibling) if sibling.is_file() else shutil.which("ffprobe")
+        if probe:
+            return str(candidate), probe
+    if not found_decoder:
         raise MediaError("FFmpeg not found. Install FFmpeg or select ffmpeg.exe / set FRAMECHECK_FFMPEG.")
-    sibling = Path(candidate).with_name("ffprobe.exe" if os.name == "nt" else "ffprobe")
-    probe = str(sibling) if sibling.is_file() else shutil.which("ffprobe")
-    if not probe:
-        raise MediaError("ffprobe not found. Install the complete FFmpeg package (ffmpeg and ffprobe).")
-    return candidate, probe
+    raise MediaError("ffprobe not found. Install the complete FFmpeg package (ffmpeg and ffprobe).")
+
+
+def tool_versions(ffmpeg: str | None = None) -> dict[str, str]:
+    result = {}
+    for name, path in zip(("ffmpeg", "ffprobe"), find_tools(ffmpeg)):
+        try:
+            process = subprocess.run([path, "-version"], check=False, capture_output=True, text=True,
+                                     encoding="utf-8", errors="replace", timeout=10, **process_options())
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise MediaError(f"Cannot run {name}: {exc}") from exc
+        lines = process.stdout.splitlines()
+        if process.returncode or not lines:
+            raise MediaError(f"{name} did not run successfully.")
+        result[name] = lines[0]
+    return result
 
 
 def number(value, default=None):

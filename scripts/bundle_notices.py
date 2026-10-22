@@ -46,6 +46,9 @@ def collect(destination: Path):
     project = Path(__file__).resolve().parents[1]
     for name in ("LICENSE", "README.md", "THIRD_PARTY_NOTICES.md"):
         shutil.copy2(project / name, destination / name)
+    installer = project / "scripts" / "安装FFmpeg.cmd"
+    (destination / installer.name).write_text(installer.read_text(encoding="utf-8"),
+                                              encoding="utf-8", newline="\r\n")
     (notices / "versions.json").write_text(json.dumps({"python": sys.version, **versions}, indent=2) + "\n",
                                          encoding="utf-8")
 

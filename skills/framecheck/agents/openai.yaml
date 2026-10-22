@@ -1,0 +1,4 @@
+interface:
+  display_name: "FrameCheck 视频对比"
+  short_description: "Compare local videos and create offline evidence reports"
+  default_prompt: "Use $framecheck to compare my reference and candidate videos and explain the differences with an offline report."

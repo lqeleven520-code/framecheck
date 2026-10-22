@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — 2026-10-23
+
+- Add a one-command and desktop first-run demo using synthetic video pairs.
+- Find portable FFmpeg folders and normal per-user Windows WinGet installations.
+- Add desktop dependency checks and shareable `doctor --json` output.
+- Publish an independent FrameCheck agent skill with direct installation instructions.
+- Add a public download/demo page, installation guidance and structured feedback forms.
+
 ## 0.1.1 — 2026-10-22
 
 - Fix CLI failures when Windows pipes use a legacy encoding that cannot print Chinese text.

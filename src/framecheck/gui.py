@@ -9,8 +9,10 @@ import webbrowser
 from datetime import datetime
 from pathlib import Path
 
+from . import __version__
 from .compare import Options, compare
-from .media import Cancelled, MediaError, find_tools
+from .demo import run_demo
+from .media import Cancelled, MediaError, find_tools, tool_versions
 
 
 class App:
@@ -19,8 +21,8 @@ class App:
         from tkinter import ttk
         self.tk, self.ttk, self.root = tk, ttk, root
         root.title("FrameCheck · 视频对比与质检")
-        root.geometry("850x690")
-        root.minsize(720, 620)
+        root.geometry("880x740")
+        root.minsize(760, 680)
         root.configure(bg="#f2f5f7")
         style = ttk.Style(root)
         style.theme_use("clam")
@@ -72,6 +74,8 @@ class App:
         actions.grid(row=9, column=0, columnspan=3, sticky="w")
         self.start_button = ttk.Button(actions, text="开始比较", style="Accent.TButton", command=self.start)
         self.start_button.pack(side="left", padx=(0, 10))
+        self.demo_button = ttk.Button(actions, text="运行内置示例", command=self.start_demo)
+        self.demo_button.pack(side="left", padx=(0, 10))
         self.cancel_button = ttk.Button(actions, text="取消", command=self.cancel, state="disabled")
         self.cancel_button.pack(side="left", padx=(0, 10))
         self.report_button = ttk.Button(actions, text="打开报告", command=self.open_report, state="disabled")
@@ -80,6 +84,13 @@ class App:
         self.progress.grid(row=10, column=0, columnspan=3, sticky="ew", pady=(22, 12))
         self.status = tk.StringVar(value="就绪 · 每次创建独立报告目录，不覆盖已有文件。")
         ttk.Label(frame, textvariable=self.status, wraplength=760).grid(row=11, column=0, columnspan=3, sticky="w")
+        help_bar = ttk.Frame(frame)
+        help_bar.grid(row=12, column=0, columnspan=3, sticky="w", pady=(18, 0))
+        environment_button = ttk.Button(help_bar, text="检查环境", command=self.check_environment)
+        environment_button.pack(side="left", padx=(0, 10))
+        self.entries.append(environment_button)
+        ttk.Button(help_bar, text="使用说明（在线）", command=lambda: webbrowser.open(
+            "https://lqeleven520-code.github.io/framecheck/")).pack(side="left")
         self.messages = queue.Queue()
         self.cancel_event = threading.Event()
         self.running = False
@@ -115,25 +126,60 @@ class App:
         except (ValueError, OSError, MediaError) as exc:
             messagebox.showerror("请检查设置", str(exc), parent=self.root)
             return
-        target = Path(self.destination.get()) / (datetime.now().strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6])
+        self.begin_work(reference, candidate, options)
+
+    def check_environment(self):
+        from tkinter import messagebox
+        try:
+            versions = tool_versions(self.ffmpeg.get().strip() or None)
+            messagebox.showinfo("环境可用", f"FrameCheck {__version__}\n\n" + "\n".join(versions.values())
+                                + "\n\n可以点击“运行内置示例”体验完整流程。", parent=self.root)
+        except MediaError as exc:
+            messagebox.showerror("需要安装或选择 FFmpeg", str(exc) + "\n\nWindows：双击下载包中的“安装FFmpeg.cmd”，"
+                                 "或运行 winget install --id Gyan.FFmpeg --exact。\n"
+                                 "也可在本窗口选择已有的 ffmpeg.exe，ffprobe.exe 应位于同一目录。",
+                                 parent=self.root)
+
+    def start_demo(self):
+        from tkinter import messagebox
+        if self.running:
+            return
+        try:
+            if not self.destination.get().strip():
+                raise MediaError("请选择示例报告的保存位置。")
+            options = Options(ffmpeg=self.ffmpeg.get().strip() or None)
+            find_tools(options.ffmpeg)
+        except (OSError, MediaError) as exc:
+            messagebox.showerror("请先检查环境", str(exc) + "\n可点击“检查环境”查看安装提示。", parent=self.root)
+            return
+        self.begin_work(None, None, options, is_demo=True)
+
+    def begin_work(self, reference, candidate, options, is_demo=False):
+        prefix = "demo-" if is_demo else ""
+        target = Path(self.destination.get()) / (prefix + datetime.now().strftime("%Y%m%d-%H%M%S")
+                                                 + "-" + uuid.uuid4().hex[:6])
         self.running = True
         self.last_report = None
         self.cancel_event.clear()
-        for widget in self.entries + [self.start_button, self.report_button]:
+        for widget in self.entries + [self.start_button, self.demo_button, self.report_button]:
             widget.configure(state="disabled")
         self.cancel_button.configure(state="normal")
         self.progress.start(12)
-        self.status.set("正在比较…")
-        self.worker = threading.Thread(target=self.work, args=(reference, candidate, target, options), daemon=True)
+        self.status.set("正在生成并比较示例…" if is_demo else "正在比较…")
+        self.worker = threading.Thread(target=self.work, args=(reference, candidate, target, options, is_demo),
+                                       daemon=True)
         self.worker.start()
 
-    def work(self, reference, candidate, target, options):
+    def work(self, reference, candidate, target, options, is_demo=False):
+        report_folder = target / "report" if is_demo else target
         try:
-            result = compare(reference, candidate, target, options,
-                             lambda message: self.messages.put(("progress", message)), self.cancel_event)
-            self.messages.put(("done", (result, target)))
+            def progress(message):
+                self.messages.put(("progress", message))
+            result = (run_demo(target, options.ffmpeg, progress, self.cancel_event) if is_demo else
+                      compare(reference, candidate, target, options, progress, self.cancel_event))
+            self.messages.put(("done", (result, report_folder, is_demo)))
         except Exception as exc:  # noqa: BLE001 - Surface worker failures in the UI, never leave a fake success.
-            self.messages.put(("error", (str(exc), target, isinstance(exc, Cancelled))))
+            self.messages.put(("error", (str(exc), report_folder, isinstance(exc, Cancelled))))
 
     def poll(self):
         while not self.messages.empty():
@@ -143,13 +189,14 @@ class App:
                 continue
             self.running = False
             self.progress.stop()
-            for widget in self.entries + [self.start_button]:
+            for widget in self.entries + [self.start_button, self.demo_button]:
                 widget.configure(state="normal")
             self.cancel_button.configure(state="disabled")
             if event == "done":
-                result, target = payload
+                result, target, is_demo = payload
                 scope = "（仅所选范围）" if result["scope"] != "whole_video" else ""
-                label = "指标通过" if result["status"] == "PASS" else "发现差异，请查看报告"
+                label = ("示例完成：已找到预设差异（报告 FAIL 是预期结果）" if is_demo else
+                         "指标通过" if result["status"] == "PASS" else "发现差异，请查看报告")
                 self.status.set(f"{label}{scope} · 已比较 {result['summary']['compared_frames']} 帧\n{target}")
             else:
                 message, target, cancelled = payload

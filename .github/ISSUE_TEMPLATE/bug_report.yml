@@ -1,0 +1,34 @@
+name: Bug report / 使用问题
+description: Report an installation, comparison or report problem with reproducible details.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "请描述实际问题；版本信息可运行 framecheck doctor --json 获取。示例视频和报告可能包含私人画面，只提供可以公开的材料。"
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating system / 系统
+      options: [Windows, macOS, Linux]
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Version and installation / 版本与安装方式
+      description: "Desktop ZIP or Python package? Paste doctor output if available."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce / 重现步骤
+      description: "Include the command or buttons used, whether the built-in demo works, and any error message."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result / 预期与实际结果
+    validations:
+      required: true

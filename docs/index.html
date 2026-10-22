@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FrameCheck — 本地视频逐帧对比与质检 · Video comparison</title>
+  <meta name="description" content="免费开源的本地视频对比工具。比较画面、帧数和时间差异，生成离线HTML报告。下载Windows桌面版、Python工具或Codex/Claude Code技能包，并在线查看真实示例。">
+  <meta name="color-scheme" content="light">
+  <link rel="canonical" href="https://lqeleven520-code.github.io/framecheck/">
+  <meta property="og:title" content="FrameCheck · 把视频差异定位到每一帧">
+  <meta property="og:description" content="Local video comparison. Windows app, Python CLI and an installable agent skill. MIT licensed; no video uploads.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lqeleven520-code.github.io/framecheck/">
+  <link rel="stylesheet" href="site.css">
+  <script src="site.js" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FrameCheck","applicationCategory":"MultimediaApplication","operatingSystem":"Windows, macOS, Linux","softwareVersion":"0.2.0","description":"Local frame-by-frame SDR video comparison with offline HTML, CSV and JSON evidence.","url":"https://lqeleven520-code.github.io/framecheck/","downloadUrl":"https://github.com/lqeleven520-code/framecheck/releases/tag/v0.2.0","license":"https://github.com/lqeleven520-code/framecheck/blob/main/LICENSE","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+  <header class="site-header wrap">
+    <a class="brand" href="./" aria-label="FrameCheck 首页"><span class="brand-mark" aria-hidden="true">F</span>FrameCheck</a>
+    <nav aria-label="主导航"><a href="#install">下载安装</a><a href="#skill">技能包</a><a href="https://github.com/lqeleven520-code/framecheck">GitHub ↗</a></nav>
+  </header>
+  <main id="main">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">开源 · 本地处理 · v0.2.0 公开测试版</p>
+        <h1>把视频差异<br>定位到<span>每一帧。</span></h1>
+        <p class="lead">选一段参考视频，再选一段待检视频。检查画面、帧数与时间差异，得到一份能打开、能复查的离线报告。</p>
+        <div class="actions"><a class="button primary" href="https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/FrameCheck-0.2.0-windows-x64.zip">下载 Windows 版 <span aria-hidden="true">↓</span></a><a class="button secondary" href="demo.html">先看示例报告 ↗</a></div>
+        <p class="fine">Windows x64；首次使用需要 FFmpeg。也支持 <a href="#python">Python 安装</a>。无需账号或 API Key。</p>
+      </div>
+      <figure class="comparison-card">
+        <div class="card-top"><span class="status-dot"></span>合成示例 · 有意加入一块差异 <span class="tag">24 FRAMES</span></div>
+        <div class="comparison-view" id="comparison-view">
+          <img src="assets/demo-reference.jpg" alt="参考帧：由程序生成的测试图案" width="320" height="180">
+          <img class="candidate-layer" id="candidate-layer" src="assets/demo-candidate.jpg" alt="待检帧：相同图案中加入红色色块" width="320" height="180">
+          <span class="split-line" id="split-line" aria-hidden="true"></span>
+          <span class="image-label before-label">待检</span><span class="image-label after-label">参考</span>
+        </div>
+        <label class="slider-label" for="compare-slider">拖动查看同一帧的差异 <span id="slider-value">50%</span></label>
+        <input id="compare-slider" type="range" min="0" max="100" value="50" aria-label="参考帧与待检帧的分界位置">
+        <figcaption>真实运行生成的示例，未使用私人视频。<a href="demo.html">打开完整报告 →</a></figcaption>
+      </figure>
+    </section>
+    <section class="use-cases wrap" aria-labelledby="use-cases-title">
+      <div class="section-heading"><p class="eyebrow">适合这些具体工作</p><h2 id="use-cases-title">检查改动，保留证据。</h2></div>
+      <div class="three-columns">
+        <article><span class="step">01</span><h3>导出前后对比</h3><p>定位渲染版本之间的画面变化，发现意外的尺寸、旋转或帧数变化。</p></article>
+        <article><span class="step">02</span><h3>压缩结果检查</h3><p>查看压缩前后的像素差异与误差走势，按自己的工作要求选择容差。</p></article>
+        <article><span class="step">03</span><h3>自动化回归测试</h3><p>用 CLI 检查重复导出的结果，读取退出码、CSV 和 JSON，留下可复查记录。</p></article>
+      </div>
+    </section>
+    <section class="install-section" id="install"><div class="wrap">
+      <div class="section-heading"><p class="eyebrow">开始使用</p><h2>先跑一份示例，再检查自己的视频。</h2></div>
+      <div class="two-columns">
+        <article class="install-card"><p class="platform-label">WINDOWS 桌面版</p><h3>下载、解压、打开</h3>
+          <ol><li>下载并解压整个 Windows 压缩包。</li><li>打开 <code>FrameCheck.exe</code>，点击“检查环境”。缺少 FFmpeg 时，双击包内的 <code>安装FFmpeg.cmd</code> 并按提示安装。</li><li>点击“运行内置示例”，完成后打开报告。</li></ol>
+          <p>示例故意制造差异，报告显示 <strong>FAIL 是预期结果</strong>。正式检查时，选择自己的参考视频和待检视频，点击“开始比较”。</p>
+          <a class="text-link" href="https://github.com/lqeleven520-code/framecheck/releases/tag/v0.2.0">全部下载文件与 SHA-256 校验和 →</a>
+        </article>
+        <article class="install-card" id="python"><p class="platform-label">PYTHON · WINDOWS / MACOS / LINUX</p><h3>一个命令体验比较流程</h3>
+          <p>在 Python 3.10+ 虚拟环境中安装；另需 FFmpeg 5.1+ 与 ffprobe。</p>
+          <pre><code>python -m pip install "https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/eleven_framecheck-0.2.0-py3-none-any.whl"
+framecheck doctor
+framecheck demo -o demo-001</code></pre>
+          <p>打开输出目录内的 <code>report/report.html</code>。检查自己的视频：</p>
+          <pre><code>framecheck compare reference.mp4 candidate.mp4 -o reports/check-001</code></pre>
+          <a class="text-link" href="https://github.com/lqeleven520-code/framecheck/blob/main/docs/QUICKSTART.md">English quick start →</a>
+        </article>
+      </div>
+    </div></section>
+    <section class="skill-section wrap" id="skill">
+      <div><p class="eyebrow">FOR CODING AGENTS</p><h2>让助手直接调用 FrameCheck。</h2><p>独立技能包告诉 Codex、Claude Code 等助手怎样运行比较、解读报告和说明检查范围。技能本身是公开说明，实际执行依赖 Python 工具与 FFmpeg。</p></div>
+      <div class="skill-install"><pre><code id="skill-command">npx skills add lqeleven520-code/framecheck --skill framecheck</code></pre><button class="button secondary" id="copy-skill" type="button">复制安装命令</button><p class="fine">需要 Node.js 22.20+。<a href="https://github.com/lqeleven520-code/framecheck/blob/main/docs/INSTALL_SKILL.md">完整安装说明</a> · <a href="https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/framecheck-skill-0.2.0.zip">下载技能 ZIP</a></p><span id="copy-status" role="status" aria-live="polite"></span></div>
+    </section>
+    <section class="wrap details-section"><div class="section-heading"><p class="eyebrow">使用边界</p><h2>报告能说明什么</h2></div>
+      <details open><summary>PASS、FAIL 和执行错误有什么区别？</summary><p>PASS 表示所选范围内的技术指标符合容差；FAIL 表示比较完成但发现差异；ERROR 或 CANCELLED 表示没有完成检查。限制帧数时，报告会标明只检查了部分范围。</p></details>
+      <details><summary>它会拆解剧情、分镜或评价创作质量吗？</summary><p>不会。FrameCheck 比较两段视频的画面和时序，不生成视频、不拆剧情、不比较音频，也不会判断创作是否好看。它按帧序号配对，不自动同步或缩放。</p></details>
+      <details><summary>视频需要上传吗？</summary><p>比较在本机运行，媒体不上传。生成的报告包含文件名和部分截图；分享前请检查这些内容，并保留整个报告目录。</p></details>
+      <details><summary>FFmpeg 已安装，为什么仍然找不到？</summary><p>先点击“检查环境”。如果自动识别失败，在界面选择 ffmpeg.exe，并确认 ffprobe.exe 与它在同一目录。也可把完整的 FFmpeg bin 目录放在桌面程序旁的 ffmpeg/bin 中。<a href="https://ffmpeg.org/download.html">FFmpeg 官方下载入口</a>提供各系统的获取方式。</p></details>
+      <details><summary>哪里可以反馈问题？</summary><p>通过 GitHub 的使用问题或使用反馈表单提交复现步骤。<code>framecheck doctor --json</code> 可提供不含本地路径的版本信息。<a href="https://github.com/lqeleven520-code/framecheck/issues/new/choose">提交反馈 →</a></p></details>
+    </section>
+    <section class="feedback wrap"><div><h2>第一次使用卡在哪里，告诉我们。</h2><p>欢迎提供可复现的问题和真实使用场景，帮助确定下一项改进。</p></div><a class="button primary" href="https://github.com/lqeleven520-code/framecheck/issues/new/choose">反馈使用体验 ↗</a></section>
+  </main>
+  <footer class="wrap"><p>FrameCheck · MIT License · Maintained by Eleven</p><p><a href="https://github.com/lqeleven520-code/framecheck">Source</a><a href="https://github.com/lqeleven520-code/framecheck/releases">Releases</a><a href="https://github.com/lqeleven520-code/framecheck/blob/main/SECURITY.md">Security</a></p></footer>
+</body>
+</html>

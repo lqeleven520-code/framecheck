@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eleven-framecheck"
-version = "0.1.1"
+version = "0.2.0"
 description = "Local video comparison with frame-level evidence and offline HTML reports"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -33,6 +33,7 @@ framecheck-gui = "framecheck.gui:main"
 [project.urls]
 Repository = "https://github.com/lqeleven520-code/framecheck"
 Issues = "https://github.com/lqeleven520-code/framecheck/issues"
+Homepage = "https://lqeleven520-code.github.io/framecheck/"
 
 [tool.setuptools.packages.find]
 where = ["src"]

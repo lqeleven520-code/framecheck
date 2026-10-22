@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
 import subprocess
 import sys
 from pathlib import Path
 
 from . import __version__
 from .compare import Options, compare
-from .media import Cancelled, MediaError, find_tools, process_options
+from .media import Cancelled, MediaError, tool_versions
 
 
 def main(argv=None) -> int:
@@ -22,7 +23,11 @@ def main(argv=None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     doctor = sub.add_parser("doctor", help="Check FFmpeg / 检查依赖")
     doctor.add_argument("--ffmpeg")
+    doctor.add_argument("--json", action="store_true", help="Shareable version information without local paths")
     sub.add_parser("gui", help="Open desktop interface / 打开桌面界面")
+    demo = sub.add_parser("demo", help="Generate and compare a synthetic video pair / 运行内置示例")
+    demo.add_argument("--output", "-o", required=True, type=Path, help="New demo folder")
+    demo.add_argument("--ffmpeg")
     run = sub.add_parser("compare", help="Compare two videos / 比较两个视频")
     run.add_argument("reference", type=Path)
     run.add_argument("candidate", type=Path)
@@ -41,15 +46,23 @@ def main(argv=None) -> int:
             gui_main()
             return 0
         if args.command == "doctor":
-            paths = find_tools(args.ffmpeg)
-            for name, path in zip(("ffmpeg", "ffprobe"), paths):
-                result = subprocess.run([path, "-version"], check=False, capture_output=True, text=True,
-                                        timeout=10, **process_options())
-                if result.returncode:
-                    raise MediaError(f"{name} did not run successfully.")
-                print(result.stdout.splitlines()[0])
-            print("Ready / 依赖可用")
+            versions = tool_versions(args.ffmpeg)
+            if args.json:
+                print(json.dumps({"status": "READY", "framecheck": __version__,
+                                  "python": platform.python_version(), "os": platform.system(),
+                                  **versions}, ensure_ascii=False, indent=2))
+            else:
+                print("\n".join(versions.values()))
+                print("Ready / 依赖可用")
             return 0
+        if args.command == "demo":
+            from .demo import run_demo
+            result = run_demo(args.output, args.ffmpeg, lambda message: print(message, file=sys.stderr))
+            print(json.dumps({"demo_completed": True, "expected_difference_detected": True,
+                              "report_status": result["status"], "compared_frames": 24,
+                              "report": str(args.output.resolve() / "report" / "report.html")},
+                             ensure_ascii=False, indent=2))
+            return 0  # The intentional FAIL in this synthetic example is the expected result.
         options = Options(**{k: getattr(args, k) for k in Options.__dataclass_fields__})
         result = compare(args.reference, args.candidate, args.output, options,
                          progress=lambda msg: print(msg, file=sys.stderr))

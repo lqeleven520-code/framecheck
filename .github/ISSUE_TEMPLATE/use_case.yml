@@ -1,0 +1,21 @@
+name: Use case or improvement / 使用反馈与建议
+description: Describe a real workflow, a friction point, or a missing capability.
+title: "[Feedback] "
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: What are you trying to check? / 你想检查什么
+      description: "For example: a render revision, a compressed export, or a frame-timing regression."
+    validations:
+      required: true
+  - type: textarea
+    id: experience
+    attributes:
+      label: What worked or got in the way? / 哪些有用，哪里卡住了
+    validations:
+      required: true
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Suggested improvement / 改进建议

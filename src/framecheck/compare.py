@@ -109,7 +109,7 @@ def compare(reference: Path, candidate: Path, output: Path, options: Options | N
         warnings.append("Only the requested frame range is assessed; this is not a whole-video pass.")
     for meta in (ref_meta, cand_meta):
         if meta["color_transfer"] in {"smpte2084", "arib-std-b67"}:
-            raise MediaError("HDR input is not supported in v0.1. Convert to a defined SDR baseline first.")
+            raise MediaError("HDR input is not supported. Convert to a defined SDR baseline first.")
     dimensions_match = (ref_meta["width"], ref_meta["height"]) == (cand_meta["width"], cand_meta["height"])
     compatible = dimensions_match and ref_meta["rotation"] == cand_meta["rotation"]
     if not dimensions_match:

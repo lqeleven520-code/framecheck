@@ -4,18 +4,31 @@
 
 Compare two SDR videos frame by frame, find visual and timing differences, and share an offline HTML report. Includes a Chinese desktop interface, a CLI, per-frame CSV and JSON results. No account, API key, uploads or telemetry.
 
-**Status:** v0.1.1, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
+**Status:** v0.2.0, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
+
+[![Tests](https://github.com/lqeleven520-code/framecheck/actions/workflows/tests.yml/badge.svg)](https://github.com/lqeleven520-code/framecheck/actions/workflows/tests.yml)
+
+**[项目主页与在线示例 / Website & demo](https://lqeleven520-code.github.io/framecheck/)** · **[问题与使用反馈](https://github.com/lqeleven520-code/framecheck/issues/new/choose)**
+
+| 你想怎样使用 | 直接入口 |
+| --- | --- |
+| Windows 桌面工具 | [下载 Windows x64 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/FrameCheck-0.2.0-windows-x64.zip) |
+| 先了解报告 | [无需安装，查看真实合成示例](https://lqeleven520-code.github.io/framecheck/demo.html) |
+| Codex / Claude Code 技能 | [安装说明](docs/INSTALL_SKILL.md) · [技能 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/framecheck-skill-0.2.0.zip) |
+| Python CLI / 自动化 | [下载 wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/eleven_framecheck-0.2.0-py3-none-any.whl) |
+
+适合导出版本对比、压缩结果检查、视频渲染回归测试。它比较两段视频，不拆解单个视频的剧情、分镜或提示词。
 
 ## 安装与使用
 
 ### Windows：桌面版
 
 1. 从本仓库的 [Releases](https://github.com/lqeleven520-code/framecheck/releases) 下载 Windows 压缩包并解压全部文件。
-2. 安装 FFmpeg：终端运行 `winget install --id Gyan.FFmpeg --exact`，完成后重新打开软件。也可从 [FFmpeg 官方下载入口](https://ffmpeg.org/download.html) 获取对应系统版本。
-3. 双击 `FrameCheck.exe`，选择“参考视频”“待检视频”和报告保存位置，点击“开始比较”。
+2. 双击 `FrameCheck.exe`，点击“检查环境”。缺少 FFmpeg 时，运行包内的 `安装FFmpeg.cmd` 并按提示安装；也可从 [FFmpeg 官方下载入口](https://ffmpeg.org/download.html) 获取对应系统版本。
+3. 第一次使用可直接点“运行内置示例”。检查自己的素材时，选择“参考视频”“待检视频”和报告保存位置，点击“开始比较”。
 4. 完成后点击“打开报告”。分享报告时请将整个报告目录一起打包，保留 `images` 子目录。
 
-安装包不捆绑 FFmpeg。自动查找失败时，可在界面选择 `ffmpeg.exe`；`ffprobe.exe` 应与其位于同一目录。Windows 程序暂未购买代码签名证书；不要绕过来源不明的安全提示，请核对官方 Release 文件与校验和。
+安装包不捆绑 FFmpeg，也不会静默下载。程序会查找 PATH、标准 WinGet 目录以及桌面程序旁的 `ffmpeg/bin`。自动查找失败时，可在界面选择 `ffmpeg.exe`；`ffprobe.exe` 应与其位于同一目录。Windows 程序暂未购买代码签名证书；请核对 Release 来源与校验和，遵循系统安全提示。
 
 ### Python：Windows / macOS / Linux
 
@@ -32,7 +45,15 @@ framecheck doctor
 framecheck gui
 ```
 
-亦可在虚拟环境中直接安装 Release 附带的 `.whl` 文件：`python -m pip install 路径/eleven_framecheck-0.1.1-py3-none-any.whl`。
+不需要克隆仓库，也可以在虚拟环境中直接安装已发布的 wheel：
+
+```bash
+python -m pip install "https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/eleven_framecheck-0.2.0-py3-none-any.whl"
+framecheck doctor
+framecheck demo -o demo-001
+```
+
+`demo-001/report/report.html` 是生成的报告。示例故意加入差异：**demo 命令退出 0，报告 FAIL 是预期结果**。输入自己的视频时，`compare` 的退出码仍按下方规则执行。包目前从 GitHub Releases 分发，不要求 PyPI 账号。
 
 macOS 可使用 `brew install ffmpeg`；Debian/Ubuntu 可使用 `sudo apt install ffmpeg python3-tk python3-venv`。桌面界面需要 Python 的 Tk 支持；CLI 不需要显示环境。
 
@@ -59,6 +80,16 @@ Output directories must be new. The app never deletes or overwrites existing rep
 
 Exit codes: **0** = metrics within thresholds for the stated scope; **1** = completed with differences; **2** = execution/input error; **130** = interrupted/cancelled. `PASS` on a partial run is not acceptance of the full file.
 
+## Agent skill / 安装技能
+
+With Node.js 22.20+, run this in the project where you want the skill:
+
+```bash
+npx skills add lqeleven520-code/framecheck --skill framecheck
+```
+
+Choose a supported agent such as Codex or Claude Code. The standalone skill helps the agent install/check the CLI, compare a supplied pair and interpret actual evidence. It is not a full video-analysis or filmmaking workflow. [Full installation instructions](docs/INSTALL_SKILL.md).
+
 ## What is checked
 
 - Original coded resolution, display rotation metadata, decoded frame counts and presentation timestamps.
@@ -71,7 +102,7 @@ Time is normalized to the first selected frame in each file. Frame pairing is by
 
 ## Limitations / 使用边界
 
-- v0.1 is intended for SDR render comparisons and regression checks. HDR inputs with PQ/HLG metadata are rejected. RGB conversion is 8-bit; this is not a mastering-grade HDR or color-fidelity validator.
+- FrameCheck is intended for SDR render comparisons and regression checks. HDR inputs with PQ/HLG metadata are rejected. RGB conversion is 8-bit; this is not a mastering-grade HDR or color-fidelity validator.
 - A pixel mismatch can be intentional. Compression, color conversion, noise, grading and different framing affect the metrics. Choose thresholds for your workflow; defaults are not an industry certification.
 - No audio waveform comparison, silence detection, semantic consistency checks, motion-quality score, SSIM or VMAF in this release. Audio stream counts are informational.
 - Variable frame rate can produce a timing difference even when average FPS looks similar; inspect the frame CSV. No optical-flow matching or automatic resynchronization is performed.
@@ -83,9 +114,8 @@ Time is normalized to the first selected frame in each file. Frame pairing is by
 
 ```bash
 python -m pip install ".[dev]"
-python examples/make_demo.py --output demo-media
-framecheck compare demo-media/reference.mkv demo-media/changed.mkv -o reports/demo
-# A FAIL result (exit 1) is expected: the candidate has an intentional changed region.
+framecheck demo -o demo-001
+# Generates local synthetic videos and a report; no media download needed.
 python -m pytest
 ```
 
@@ -96,9 +126,14 @@ The demo uses generated geometric patterns, not private or third-party videos. S
 ```powershell
 python -m pip install ".[bundle]"
 python -m PyInstaller --noconfirm --clean --onedir --windowed --name FrameCheck scripts/desktop.py
+python scripts/bundle_notices.py dist/FrameCheck
 ```
 
 Distribute the **whole** `dist/FrameCheck` directory. FFmpeg remains an external dependency. See [third-party notices](THIRD_PARTY_NOTICES.md).
+
+## Feedback / 使用反馈
+
+Try the built-in demo, then a small pair from your actual workflow. If installation fails or the evidence is confusing, [open a report](https://github.com/lqeleven520-code/framecheck/issues/new/choose) with the steps and `framecheck doctor --json` output. The version output omits local paths. Send only files and report contents you intend to make public.
 
 ## License
 

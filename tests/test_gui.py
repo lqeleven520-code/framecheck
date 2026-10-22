@@ -17,15 +17,17 @@ def test_gui_worker_generates_report_and_reenables_controls(make_video, tmp_path
         app.reference.set(str(source))
         app.candidate.set(str(source))
         app.destination.set(str(tmp_path / "gui-output"))
-        app.start()
-        deadline = time.monotonic() + 30
-        while app.running and time.monotonic() < deadline:
-            root.update()
-            time.sleep(0.01)
-        assert not app.running
-        assert app.last_report and app.last_report.is_file()
-        assert "指标通过" in app.status.get()
-        assert str(app.start_button["state"]) == "normal"
+        for demo in (False, True):
+            app.start_demo() if demo else app.start()
+            deadline = time.monotonic() + 30
+            while app.running and time.monotonic() < deadline:
+                root.update()
+                time.sleep(0.01)
+            assert not app.running
+            assert app.last_report and app.last_report.is_file()
+            assert ("示例完成" if demo else "指标通过") in app.status.get()
+            assert str(app.start_button["state"]) == "normal"
+            assert str(app.demo_button["state"]) == "normal"
     finally:
         app.cancel_event.set()
         if hasattr(app, "worker"):

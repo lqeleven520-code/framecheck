@@ -9,3 +9,7 @@ No source code from FFMetrics or pixop/video-compare is included. They were revi
 Development used AI coding assistance. Maintainer review and the actual published test results, rather than code generation alone, establish the tested behavior. No independent user count or download count is claimed at first release.
 
 `docs/source-fingerprints.json` records hashes of the two supplied input utilities for traceability, without copying the originals or their machine-specific locations.
+
+## Public agent skill
+
+The `skills/framecheck` package was written specifically for this public CLI. It describes installation, comparison scope and evidence interpretation. It does not include personal creative workflows, a private skill library, private videos or application/account material.
