@@ -4,7 +4,7 @@
 
 Compare two SDR videos frame by frame, find visual and timing differences, and share an offline HTML report. Includes a Chinese desktop interface, a CLI, per-frame CSV and JSON results. No account, API key, uploads or telemetry.
 
-**Status:** v0.2.0, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
+**Status:** v0.2.1, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
 
 [![Tests](https://github.com/lqeleven520-code/framecheck/actions/workflows/tests.yml/badge.svg)](https://github.com/lqeleven520-code/framecheck/actions/workflows/tests.yml)
 
@@ -12,10 +12,10 @@ Compare two SDR videos frame by frame, find visual and timing differences, and s
 
 | 你想怎样使用 | 直接入口 |
 | --- | --- |
-| Windows 桌面工具 | [下载 Windows x64 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/FrameCheck-0.2.0-windows-x64.zip) |
+| Windows 桌面工具 | [下载 Windows x64 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/FrameCheck-0.2.1-windows-x64.zip) |
 | 先了解报告 | [无需安装，查看真实合成示例](https://lqeleven520-code.github.io/framecheck/demo.html) |
-| Codex / Claude Code 技能 | [安装说明](docs/INSTALL_SKILL.md) · [技能 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/framecheck-skill-0.2.0.zip) |
-| Python CLI / 自动化 | [下载 wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/eleven_framecheck-0.2.0-py3-none-any.whl) |
+| Codex / Claude Code 技能 | [安装说明](docs/INSTALL_SKILL.md) · [技能 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/framecheck-skill-0.2.1.zip) |
+| Python CLI / 自动化 | [下载 wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/eleven_framecheck-0.2.1-py3-none-any.whl) |
 
 适合导出版本对比、压缩结果检查、视频渲染回归测试。它比较两段视频，不拆解单个视频的剧情、分镜或提示词。
 
@@ -48,7 +48,7 @@ framecheck gui
 不需要克隆仓库，也可以在虚拟环境中直接安装已发布的 wheel：
 
 ```bash
-python -m pip install "https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/eleven_framecheck-0.2.0-py3-none-any.whl"
+python -m pip install "https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/eleven_framecheck-0.2.1-py3-none-any.whl"
 framecheck doctor
 framecheck demo -o demo-001
 ```
@@ -88,7 +88,7 @@ With Node.js 22.20+, run this in the project where you want the skill:
 npx skills add lqeleven520-code/framecheck --skill framecheck
 ```
 
-Choose a supported agent such as Codex or Claude Code. The standalone skill helps the agent install/check the CLI, compare a supplied pair and interpret actual evidence. It is not a full video-analysis or filmmaking workflow. [Full installation instructions](docs/INSTALL_SKILL.md).
+Choose a supported agent such as Codex or Claude Code. The skill contains the same inspectable Python source as the public app and a local entrypoint; it does not download a separate FrameCheck runtime. Python 3.10+, NumPy, Pillow and FFmpeg are required. It compares a supplied pair and interprets evidence, not stories or shots. [Full installation instructions](docs/INSTALL_SKILL.md).
 
 ## What is checked
 
@@ -130,6 +130,8 @@ python scripts/bundle_notices.py dist/FrameCheck
 ```
 
 Distribute the **whole** `dist/FrameCheck` directory. FFmpeg remains an external dependency. See [third-party notices](THIRD_PARTY_NOTICES.md).
+
+Maintainers: run `python scripts/sync_agent_skill.py` after changing the runtime. Packaging tests verify that the skill contains the same source and dependency declarations.
 
 ## Feedback / 使用反馈
 

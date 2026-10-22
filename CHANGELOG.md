@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 — 2026-10-23
+
+- Bundle inspectable FrameCheck source in the agent skill, with a local entrypoint and dependency file; remove the separate FrameCheck wheel download from the skill workflow.
+- Verify the skill runtime and dependency declarations stay synchronized with the public app.
+- Reuse installed FFmpeg in Linux CI and bound package-manager network waits.
+
 ## 0.2.0 — 2026-10-23
 
 - Add a one-command and desktop first-run demo using synthetic video pairs.

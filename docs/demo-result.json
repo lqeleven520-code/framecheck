@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "tool": "FrameCheck",
-  "version": "0.2.0",
-  "created_utc": "2026-10-22T17:02:44.695649+00:00",
+  "version": "0.2.1",
+  "created_utc": "2026-10-22T17:51:43.508734+00:00",
   "status": "FAIL",
   "scope": "whole_video",
   "reference": {
@@ -19,7 +19,7 @@
     "stream_index": 0,
     "color_transfer": null,
     "audio_streams": 0,
-    "sha256": "f1d7d0ef7044ac0afd132cca27581374d59157e70da41ada110dd4357859c285"
+    "sha256": "728547b8a7965099eaab60c6280af9e583342ed293dc3804ee72b9a09fbe3d62"
   },
   "candidate": {
     "name": "changed.mkv",
@@ -35,7 +35,7 @@
     "stream_index": 0,
     "color_transfer": null,
     "audio_streams": 0,
-    "sha256": "8ac25e902b062e666dba2086f3b25f689fd4728f1a79e03e350b7f103f4ec8b1"
+    "sha256": "d4bc07c5c93a703704bafe852d0ab8d0e4b636e8cdf14c2537180943f00d5b60"
   },
   "byte_identical": false,
   "options": {

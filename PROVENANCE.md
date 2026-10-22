@@ -12,4 +12,4 @@ Development used AI coding assistance. Maintainer review and the actual publishe
 
 ## Public agent skill
 
-The `skills/framecheck` package was written specifically for this public CLI. It describes installation, comparison scope and evidence interpretation. It does not include personal creative workflows, a private skill library, private videos or application/account material.
+The `skills/framecheck` package was written specifically for this public CLI. It includes inspectable copies of the public `src/framecheck` modules and a local entrypoint, synchronized by `scripts/sync_agent_skill.py` and checked in tests. It does not fetch a separate FrameCheck runtime. It does not include personal creative workflows, a private skill library, private videos or application/account material.

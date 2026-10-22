@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-23",
+  "version": "0.2.1",
+  "local_windows_tests": {
+    "passed": 36,
+    "failed": 0
+  },
+  "ruff": "passed",
+  "clean_wheel_install": "passed; generated and compared a 24-frame synthetic pair",
+  "frozen_windows_bundle": {
+    "engine": "PASS",
+    "gui_worker": "PASS",
+    "frames": 4,
+    "gui_demo": "PASS",
+    "demo_frames": 24,
+    "synthetic_media_only": true
+  },
+  "ffmpeg_autodetection": "actual per-user WinGet installation found with no FFmpeg PATH entry or explicit override",
+  "agent_skill": "format valid; inspectable source installed into an isolated Codex project; demo passed in a fresh environment with no FrameCheck distribution installed",
+  "browser_checks": "local homepage and report opened; slider changed image clipping; images loaded; copy button worked; no horizontal overflow at the observed 1265px width",
+  "cross_platform_ci": "Configured for Windows/Linux/macOS Intel with Python 3.10/3.12; consult Actions for the actual 0.2.1 run.",
+  "independent_external_usage": "not established; maintainer installation tests do not establish adoption"
+}

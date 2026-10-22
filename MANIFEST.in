@@ -6,3 +6,4 @@ recursive-include scripts *.py
 recursive-include scripts *.cmd
 recursive-include skills *
 recursive-include third_party *
+global-exclude *.py[cod]

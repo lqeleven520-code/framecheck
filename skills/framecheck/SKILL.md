@@ -2,19 +2,26 @@
 name: framecheck
 description: Compare two local SDR videos frame by frame with FrameCheck and produce an offline HTML, CSV and JSON evidence report. Use for render/export regression checks, compression comparisons, frame-count or timing mismatches, and 视频逐帧对比、导出质检. This does not extract a video's story or shots, compare audio, or judge creative quality.
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
 ---
 
 # FrameCheck video comparison
 
-Use the public FrameCheck CLI to turn a reference/candidate pair into reproducible local evidence. The engine streams decoded RGB frames and actual presentation timestamps. Videos stay on the local machine.
+Use the FrameCheck source bundled in this skill to turn a reference/candidate pair into reproducible local evidence. The engine streams decoded RGB frames and actual presentation timestamps. Videos stay on the local machine. The runtime is inspectable Python source in `scripts/framecheck`; no separately downloaded FrameCheck wheel is required.
 
 ## Setup
 
-Check `framecheck --version` and `framecheck doctor --json`. If the command is absent, install the released package in an appropriate Python 3.10+ virtual environment:
+Resolve the installed skill directory from the location of this `SKILL.md`. Use its `scripts/run_framecheck.py` helper with an appropriate Python 3.10+ interpreter. In the examples below, replace `<skill-directory>` with that observed absolute directory; keep reports in the user's working project, not inside the installed skill.
 
 ```bash
-python -m pip install "https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.0/eleven_framecheck-0.2.0-py3-none-any.whl"
+python "<skill-directory>/scripts/run_framecheck.py" --version
+python "<skill-directory>/scripts/run_framecheck.py" doctor --json
+```
+
+If NumPy or Pillow is absent, install this skill's `requirements.txt` into the chosen virtual environment, then use that environment's Python for the helper. The dependencies match the public project's declared dependencies. Do not replace the bundled runtime with code fetched from an arbitrary URL.
+
+```bash
+python -m pip install -r "<skill-directory>/requirements.txt"
 ```
 
 FFmpeg 5.1+ and ffprobe are external dependencies. Use the platform's package manager or the [official FFmpeg download links](https://ffmpeg.org/download.html). On Windows, `winget install --id Gyan.FFmpeg --exact` is supported. An explicit `--ffmpeg` path takes precedence; keep ffprobe beside it. Do not install into unrelated environments or change global configuration merely to run a comparison.
@@ -22,7 +29,7 @@ FFmpeg 5.1+ and ffprobe are external dependencies. Use the platform's package ma
 For a self-contained first run, use a new output folder:
 
 ```bash
-framecheck demo --output framecheck-demo-001
+python "<skill-directory>/scripts/run_framecheck.py" demo --output framecheck-demo-001
 ```
 
 This generates synthetic videos with an intentional changed region. A successful demo command exits 0 while its report says FAIL; that difference is expected and is explained in the command output.
@@ -32,7 +39,7 @@ This generates synthetic videos with an intentional changed region. A successful
 Identify which file is the reference and which is the candidate from the user's request. Preserve that order. Use a new report directory and quote paths containing spaces or non-ASCII characters:
 
 ```bash
-framecheck compare "reference.mp4" "candidate.mp4" --output "reports/check-001"
+python "<skill-directory>/scripts/run_framecheck.py" compare "reference.mp4" "candidate.mp4" --output "reports/check-001"
 ```
 
 Use defaults unless the user or an established workflow specifies tolerances. The default maximum per-frame RGB MAE is 2.5 (0–255); the relative timing tolerance is 20 ms. These are configurable technical thresholds, not a perceptual-quality standard.

@@ -16,23 +16,24 @@ npx skills add lqeleven520-code/framecheck --skill framecheck
 npx skills add lqeleven520-code/framecheck --list
 ```
 
-此命令安装的是技能说明。实际比较仍需要 Python 版 FrameCheck 和 FFmpeg，技能会先检查环境并提供安装步骤。安装完成后可让助手执行：
+此命令会安装技能说明和同版本的 FrameCheck Python 源码，无需再下载 FrameCheck wheel。运行需要 Python 3.10+、NumPy、Pillow 和 FFmpeg；技能会先检查环境，缺少 Python 依赖时使用包内的 `requirements.txt`。安装完成后可让助手执行：
 
 > 使用 framecheck 比较这两个本地视频，参考视频是 A，待检视频是 B，把报告保存到一个新目录，并说明具体差异。
 
 ## 直接下载
 
-从 [Releases](https://github.com/lqeleven520-code/framecheck/releases) 下载 `framecheck-skill-0.2.0.zip`。解压后将其中的 `framecheck` 文件夹放进客户端支持的技能目录，再重新载入技能。里面包含 `SKILL.md`、界面元数据和 MIT 许可。
+从 [Releases](https://github.com/lqeleven520-code/framecheck/releases) 下载 `framecheck-skill-0.2.1.zip`。解压后将其中的 `framecheck` 文件夹放进客户端支持的技能目录，再重新载入技能。里面包含 `SKILL.md`、可阅读的运行源码、Python 依赖声明、界面元数据和 MIT 许可。
 
 源码路径是 [`skills/framecheck`](../skills/framecheck)。不要把整个软件源码目录当作单个技能目录。
 
 ## 验证
 
-在已安装 Python 工具的环境运行：
+独立技能不要求另外安装 FrameCheck。让助手定位技能目录后，在选定的 Python 虚拟环境中运行（将路径换成真实安装目录）：
 
 ```bash
-framecheck doctor --json
-framecheck demo -o framecheck-demo-001
+python -m pip install -r "技能目录/requirements.txt"
+python "技能目录/scripts/run_framecheck.py" doctor --json
+python "技能目录/scripts/run_framecheck.py" demo -o framecheck-demo-001
 ```
 
 打开输出中的 `report/report.html`。示例故意加入红色色块，报告应发现差异；demo 命令正常结束返回 0。
