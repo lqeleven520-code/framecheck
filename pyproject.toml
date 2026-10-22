@@ -31,8 +31,8 @@ framecheck = "framecheck.cli:main"
 framecheck-gui = "framecheck.gui:main"
 
 [project.urls]
-Repository = "https://github.com/lqeleven520-code/framecheck"
-Issues = "https://github.com/lqeleven520-code/framecheck/issues"
+Repository = "https://github.com/wuliaoge11/framecheck"
+Issues = "https://github.com/wuliaoge11/framecheck/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

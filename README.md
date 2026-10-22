@@ -10,7 +10,7 @@ Compare two SDR videos frame by frame, find visual and timing differences, and s
 
 ### Windows：桌面版
 
-1. 从本仓库的 [Releases](https://github.com/lqeleven520-code/framecheck/releases) 下载 Windows 压缩包并解压全部文件。
+1. 从本仓库的 [Releases](https://github.com/wuliaoge11/framecheck/releases) 下载 Windows 压缩包并解压全部文件。
 2. 安装 FFmpeg：终端运行 `winget install --id Gyan.FFmpeg --exact`，完成后重新打开软件。也可从 [FFmpeg 官方下载入口](https://ffmpeg.org/download.html) 获取对应系统版本。
 3. 双击 `FrameCheck.exe`，选择“参考视频”“待检视频”和报告保存位置，点击“开始比较”。
 4. 完成后点击“打开报告”。分享报告时请将整个报告目录一起打包，保留 `images` 子目录。
@@ -22,7 +22,7 @@ Compare two SDR videos frame by frame, find visual and timing differences, and s
 需要 Python 3.10+、FFmpeg 5.1+ 和 ffprobe。建议使用虚拟环境：
 
 ```bash
-git clone https://github.com/lqeleven520-code/framecheck.git
+git clone https://github.com/wuliaoge11/framecheck.git
 cd framecheck
 python -m venv .venv
 # Windows PowerShell: .\.venv\Scripts\Activate.ps1
