@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         # Keep macOS coverage on Intel while the hosted ARM pool is capacity-constrained.
-        os: [ubuntu-latest, windows-latest, macos-15-intel]
+        os: [ubuntu-24.04, windows-latest, macos-15-intel]
         python: ['3.10', '3.12']
     runs-on: ${{ matrix.os }}
     steps:
@@ -22,11 +22,17 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: FFmpeg on Linux
         if: runner.os == 'Linux'
-        timeout-minutes: 5
+        timeout-minutes: 8
         run: |
           if command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null; then
             ffmpeg -version
           else
+            # Avoid the hosted Azure mirror stalls observed during dependency downloads.
+            for source in /etc/apt/apt-mirrors.txt /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources; do
+              if [ -f "$source" ]; then
+                sudo sed -i 's|azure.archive.ubuntu.com|archive.ubuntu.com|g' "$source"
+              fi
+            done
             sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
             sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y ffmpeg
           fi
