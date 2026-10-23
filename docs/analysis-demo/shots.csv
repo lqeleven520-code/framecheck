@@ -1,0 +1,4 @@
+﻿shot,start_s,end_s,duration_s,start_frame,end_frame_exclusive,motion_estimate,confidence,dialogue,keyframe,clip
+1,0.0,2.0,2.0,0,32,整体画面近似静止 / approximately static,1.0,这是合成字幕示例，不是语音识别结果。,keyframes/shot-0001.jpg,
+2,2.0,4.0,2.0,32,64,疑似向右摇摄或平移（画面左移） / possible pan right,1.0,第二个镜头：整体画面向左移动。,keyframes/shot-0002.jpg,
+3,4.0,6.0005,2.0005,64,96,画面放大，疑似推进或变焦 / apparent zoom in,0.938,第三个镜头：画面逐渐放大。,keyframes/shot-0003.jpg,

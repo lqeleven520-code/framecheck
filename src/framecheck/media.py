@@ -135,6 +135,12 @@ def probe_media(path: Path, ffprobe: str) -> dict:
         "stream_index": stream["index"],
         "color_transfer": stream.get("color_transfer"),
         "audio_streams": sum(s.get("codec_type") == "audio" for s in data.get("streams", [])),
+        "start_time": number(stream.get("start_time"), 0.0),
+        "sample_aspect_ratio": stream.get("sample_aspect_ratio", "1:1"),
+        "format_start_time": number(data.get("format", {}).get("start_time"), 0.0),
+        "subtitle_streams": [{"index": s["index"], "codec": s.get("codec_name"),
+                              "language": s.get("tags", {}).get("language", "und")}
+                             for s in data.get("streams", []) if s.get("codec_type") == "subtitle"],
     }
 
 
@@ -142,7 +148,8 @@ class Decoder:
     """Stream original-size RGB frames and their actual presentation timestamps."""
 
     def __init__(self, path: Path, meta: dict, ffmpeg: str, start: int = 0,
-                 limit: int | None = None, cancel: threading.Event | None = None):
+                 limit: int | None = None, cancel: threading.Event | None = None,
+                 max_size: int | None = None, preserve_timestamps: bool = False):
         self.meta = meta
         self.path = path
         self.cancel = cancel or threading.Event()
@@ -150,12 +157,20 @@ class Decoder:
         self.tail: deque[str] = deque(maxlen=12)
         self.closed = False
         self.finished = threading.Event()
-        filters = (f"select=gte(n\\,{start})," if start else "") + "format=rgb24,showinfo"
+        self.width, self.height = meta["width"], meta["height"]
+        scale = ""
+        if max_size is not None and max(self.width, self.height) > max_size:
+            ratio = max_size / max(self.width, self.height)
+            self.width, self.height = max(2, int(self.width * ratio)), max(2, int(self.height * ratio))
+            scale = f"scale={self.width}:{self.height},"
+        filters = (f"select=gte(n\\,{start})," if start else "") + scale + "format=rgb24,showinfo"
         cmd = [ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "info", "-xerror",
                "-protocol_whitelist", "file,pipe,crypto,data", "-noautorotate", "-i", str(path),
                "-map", f"0:{meta['stream_index']}",
                "-an", "-sn", "-dn", "-filter_threads", "1", "-vf", filters,
                "-fps_mode", "passthrough"]
+        if preserve_timestamps:
+            cmd.insert(1, "-copyts")
         if limit is not None:
             cmd += ["-frames:v", str(limit)]
         cmd += ["-threads", "1", "-pix_fmt", "rgb24", "-f", "rawvideo", "pipe:1"]
@@ -196,7 +211,7 @@ class Decoder:
             raise StopIteration
         if self.cancel.is_set():
             raise Cancelled("Comparison cancelled.")
-        size = self.meta["width"] * self.meta["height"] * 3
+        size = self.width * self.height * 3
         data = bytearray()
         while len(data) < size:
             chunk = self.proc.stdout.read(size - len(data))
@@ -220,7 +235,7 @@ class Decoder:
             pts = self.timestamps.get(timeout=10)
         except queue.Empty as exc:
             raise MediaError("FFmpeg did not provide a presentation timestamp; no estimated result was used.") from exc
-        return np.frombuffer(data, dtype=np.uint8).reshape(self.meta["height"], self.meta["width"], 3), pts
+        return np.frombuffer(data, dtype=np.uint8).reshape(self.height, self.width, 3), pts
 
     def close(self):
         self.closed = True

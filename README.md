@@ -1,10 +1,10 @@
 # FrameCheck
 
-**本地视频对比与质检工具 / Local video comparison with evidence.**
+**本地视频解析、镜头拆分与对比工具 / Local video analysis and comparison.**
 
-Compare two SDR videos frame by frame, find visual and timing differences, and share an offline HTML report. Includes a Chinese desktop interface, a CLI, per-frame CSV and JSON results. No account, API key, uploads or telemetry.
+Analyze a single SDR video into shots, estimated camera motion, timed dialogue and editable 4–15 second breakdown units, or compare two videos frame by frame. Includes a Chinese desktop interface, CLI and offline reports. The CLI does not upload media or require an API key. Speech models download on first use; cached models work offline.
 
-**Status:** v0.2.1, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
+**Status:** v0.3.0, early public release. Technical metrics are not a guarantee of perceptual or creative quality. Independent adoption has not yet been established.
 
 [![Tests](https://github.com/lqeleven520-code/framecheck/actions/workflows/tests.yml/badge.svg)](https://github.com/lqeleven520-code/framecheck/actions/workflows/tests.yml)
 
@@ -12,12 +12,48 @@ Compare two SDR videos frame by frame, find visual and timing differences, and s
 
 | 你想怎样使用 | 直接入口 |
 | --- | --- |
-| Windows 桌面工具 | [下载 Windows x64 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/FrameCheck-0.2.1-windows-x64.zip) |
+| Windows 桌面工具 | [下载 Windows x64 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/FrameCheck-0.3.0-windows-x64.zip) |
 | 先了解报告 | [无需安装，查看真实合成示例](https://lqeleven520-code.github.io/framecheck/demo.html) |
-| Codex / Claude Code 技能 | [安装说明](docs/INSTALL_SKILL.md) · [技能 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/framecheck-skill-0.2.1.zip) |
-| Python CLI / 自动化 | [下载 wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/eleven_framecheck-0.2.1-py3-none-any.whl) |
+| Codex / Claude Code 技能 | [安装说明](docs/INSTALL_SKILL.md) · [技能 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/framecheck-skill-0.3.0.zip) |
+| Python CLI / 自动化 | [下载 wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/eleven_framecheck-0.3.0-py3-none-any.whl) |
 
-适合导出版本对比、压缩结果检查、视频渲染回归测试。它比较两段视频，不拆解单个视频的剧情、分镜或提示词。
+支持单视频解析，也保留导出版本对比、压缩检查与渲染回归测试。运镜属于可核对的图像运动估计；画面内容、人物动作等语义字段由用户或具备视觉能力的助手结合实际画面补充。
+
+## 单视频解析 / Analyze one video
+
+Windows 桌面版点击 **“解析单个视频”**，选择文件后点“开始解析”；也可先运行不需要语音模型的“解析示例”。原来的双视频比较入口继续保留。
+
+Python 从源码安装：
+
+```bash
+python -m pip install ".[analysis,speech]"
+framecheck analyze-demo -o analysis-demo-001
+framecheck analyze "video.mp4" -o analysis-001
+# Existing UTF-8 SRT; no speech model needed:
+framecheck analyze "video.mp4" --subtitles dialogue.srt -o analysis-002
+# Only use cached/local speech models:
+framecheck analyze "video.mp4" --model base --offline -o analysis-003
+# Also export each detected shot as an MP4:
+framecheck analyze "video.mp4" --export-clips -o analysis-004
+```
+
+自动模式先读取内嵌文字字幕，无字幕且有音轨时使用本地 Whisper。首次会下载模型（base 约 150 MB）；视频和音频不上传。可用 `--transcript none` 跳过台词，或用 `--model` 指定本地 CTranslate2 模型目录。图像字幕/OCR、说话人身份和声纹区分不在本版范围内。
+
+输出 `report.html`、`analysis.json`、`shots.csv`、`motion.csv`、`transcript.srt`、`transcript.txt`、`storyboard.json/md/csv` 和 `breakdown.txt`。报告中的镜头备注可以编辑，再下载逐片段解析或 JSON；页面关闭前须导出修改。
+
+- 画幅取原视频实际显示比例，处理旋转与像素比例，不固定为21:9。
+- 解析单元按 **4—15秒** 组织，优先使用实际切点；原始镜头时长保留。视频不足4秒时保留真实时长，不补帧或拉长。
+- 逐片段格式包含源区间、比例、时长、参考对象、首帧、逐镜时间轴和末帧观察；**整体导演设计只含画面风格**，没有基调或导演意图栏目。
+- 不包含视频续接法、镜间承接指令、下一条起点、制作交接、私人技能或私人剧情示例。
+- 运动拟合不能证明实际摄影机运动；快速动作、闪光、叠化和低纹理画面可能误检。台词识别也须核对。
+
+自动引擎不编造人物动作、表情、风格或设备。语义备注默认未分析；可在报告中填写，或让视觉助手查看实际证据后完善。编辑导出的 JSON 后可运行：
+
+```bash
+framecheck export-notes storyboard-reviewed.json -o breakdown-reviewed.txt
+```
+
+分析退出码：0 = 所选流程完成；1 = 部分完成（如台词提取失败）；2 = 执行错误；130 = 已取消。COMPLETE 不表示人工内容验收。[解析说明](docs/ANALYSIS.md)
 
 ## 安装与使用
 
@@ -48,7 +84,7 @@ framecheck gui
 不需要克隆仓库，也可以在虚拟环境中直接安装已发布的 wheel：
 
 ```bash
-python -m pip install "https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/eleven_framecheck-0.2.1-py3-none-any.whl"
+python -m pip install "eleven-framecheck[analysis,speech] @ https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/eleven_framecheck-0.3.0-py3-none-any.whl"
 framecheck doctor
 framecheck demo -o demo-001
 ```
@@ -88,7 +124,7 @@ With Node.js 22.20+, run this in the project where you want the skill:
 npx skills add lqeleven520-code/framecheck --skill framecheck
 ```
 
-Choose a supported agent such as Codex or Claude Code. The skill contains the same inspectable Python source as the public app and a local entrypoint; it does not download a separate FrameCheck runtime. Python 3.10+, NumPy, Pillow and FFmpeg are required. It compares a supplied pair and interprets evidence, not stories or shots. [Full installation instructions](docs/INSTALL_SKILL.md).
+Choose a supported agent such as Codex or Claude Code. The skill includes the same inspectable runtime source. It supports single-video breakdowns and pair comparisons; semantic descriptions require actual visual inspection by the agent. Python 3.10+, base dependencies and FFmpeg are required; analysis adds OpenCV, speech adds faster-whisper. [Installation instructions](docs/INSTALL_SKILL.md).
 
 ## What is checked
 
@@ -113,7 +149,7 @@ Time is normalized to the first selected frame in each file. Frame pairing is by
 ## Reproducible demo
 
 ```bash
-python -m pip install ".[dev]"
+python -m pip install ".[dev,analysis]"
 framecheck demo -o demo-001
 # Generates local synthetic videos and a report; no media download needed.
 python -m pytest
@@ -124,8 +160,8 @@ The demo uses generated geometric patterns, not private or third-party videos. S
 ## Build a Windows executable
 
 ```powershell
-python -m pip install ".[bundle]"
-python -m PyInstaller --noconfirm --clean --onedir --windowed --name FrameCheck scripts/desktop.py
+python -m pip install ".[bundle,analysis,speech]"
+python -m PyInstaller --noconfirm --clean --onedir --windowed --name FrameCheck --collect-all faster_whisper --collect-all ctranslate2 --collect-all onnxruntime --collect-all tokenizers --copy-metadata huggingface-hub --copy-metadata tqdm scripts/desktop.py
 python scripts/bundle_notices.py dist/FrameCheck
 ```
 

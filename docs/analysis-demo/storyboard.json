@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "source_name": "synthetic-shots.mkv",
+  "source_sha256": "0646e6f5b4446c456dc40debff5a3db7a63314024b7615908588db55c541cd1f",
+  "aspect": "16:9 横屏",
+  "units": [
+    {
+      "id": 1,
+      "start_s": 0.0,
+      "end_s": 6.0005,
+      "duration_s": 6.0005,
+      "short_source_exception": false,
+      "speech_crosses_boundary": false,
+      "shots": [
+        {
+          "shot_id": 1,
+          "start_s": 0.0,
+          "end_s": 2.0,
+          "source_start_s": 0.0,
+          "source_end_s": 2.0,
+          "partial_original_shot": false
+        },
+        {
+          "shot_id": 2,
+          "start_s": 2.0,
+          "end_s": 4.0,
+          "source_start_s": 2.0,
+          "source_end_s": 4.0,
+          "partial_original_shot": false
+        },
+        {
+          "shot_id": 3,
+          "start_s": 4.0,
+          "end_s": 6.0005,
+          "source_start_s": 4.0,
+          "source_end_s": 6.0005,
+          "partial_original_shot": false
+        }
+      ],
+      "keyframes": {
+        "start": {
+          "path": "units/unit-0001-start.jpg",
+          "time_s": 0.0
+        },
+        "middle": {
+          "path": "units/unit-0001-middle.jpg",
+          "time_s": 3.063
+        },
+        "end": {
+          "path": "units/unit-0001-end.jpg",
+          "time_s": 5.938
+        }
+      },
+      "visual_style": "",
+      "references": {
+        "场景": "",
+        "出场人物": "",
+        "道具": ""
+      },
+      "first_frame_notes": "",
+      "last_frame_notes": ""
+    }
+  ],
+  "transcript_source": "provided_srt",
+  "notice": "空白视觉字段表示未分析。可结合关键帧/片段填写；运镜为估计，台词需核对。",
+  "shots": [
+    {
+      "shot": 1,
+      "start_s": 0.0,
+      "end_s": 2.0,
+      "keyframe": "keyframes/shot-0001.jpg",
+      "fields": {
+        "景别／视角": "",
+        "机位／运镜": "整体画面近似静止 / approximately static",
+        "摄影参数": "320×180；16.000 fps；焦段、光圈与机位未测定",
+        "画面内容": "",
+        "人物动作": "",
+        "人物神态": "",
+        "台词／声音": "这是合成字幕示例，不是语音识别结果。",
+        "场景光影": ""
+      },
+      "motion_source": "algorithm_estimate",
+      "dialogue_source": "provided_srt"
+    },
+    {
+      "shot": 2,
+      "start_s": 2.0,
+      "end_s": 4.0,
+      "keyframe": "keyframes/shot-0002.jpg",
+      "fields": {
+        "景别／视角": "",
+        "机位／运镜": "疑似向右摇摄或平移（画面左移） / possible pan right",
+        "摄影参数": "320×180；16.000 fps；焦段、光圈与机位未测定",
+        "画面内容": "",
+        "人物动作": "",
+        "人物神态": "",
+        "台词／声音": "第二个镜头：整体画面向左移动。",
+        "场景光影": ""
+      },
+      "motion_source": "algorithm_estimate",
+      "dialogue_source": "provided_srt"
+    },
+    {
+      "shot": 3,
+      "start_s": 4.0,
+      "end_s": 6.0005,
+      "keyframe": "keyframes/shot-0003.jpg",
+      "fields": {
+        "景别／视角": "",
+        "机位／运镜": "画面放大，疑似推进或变焦 / apparent zoom in",
+        "摄影参数": "320×180；16.000 fps；焦段、光圈与机位未测定",
+        "画面内容": "",
+        "人物动作": "",
+        "人物神态": "",
+        "台词／声音": "第三个镜头：画面逐渐放大。",
+        "场景光影": ""
+      },
+      "motion_source": "algorithm_estimate",
+      "dialogue_source": "provided_srt"
+    }
+  ]
+}

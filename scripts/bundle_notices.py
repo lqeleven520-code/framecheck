@@ -13,12 +13,16 @@ def collect(destination: Path):
     notices = destination / "licenses"
     notices.mkdir(parents=True, exist_ok=True)
     versions = {}
-    for name in ("numpy", "Pillow", "pyinstaller", "altgraph", "packaging", "pywin32-ctypes"):
+    for name in ("numpy", "Pillow", "pyinstaller", "altgraph", "packaging", "pywin32-ctypes",
+                 "opencv-python-headless", "faster-whisper", "ctranslate2", "av", "onnxruntime",
+                 "huggingface-hub", "tokenizers", "tqdm", "pyyaml", "flatbuffers", "protobuf",
+                 "filelock", "fsspec", "hf-xet", "httpx2", "httpcore2", "anyio", "idna", "h11",
+                 "truststore", "typing-extensions", "click", "colorama"):
         dist = importlib.metadata.distribution(name)
         versions[name] = dist.version
-        selected = [item for item in (dist.files or [])
-                    if any(word in item.name.lower() for word in ("license", "licence", "copyright", "copying"))
-                    or "licenses" in item.parts]
+        selected = [item for item in (dist.files or []) if item.suffix not in (".pyc", ".pyo")
+                    and (any(word in item.name.lower() for word in ("license", "licence", "copyright", "copying", "notice"))
+                         or "licenses" in item.parts)]
         count = 0
         for item in selected:
             path = Path(dist.locate_file(item))
@@ -28,7 +32,12 @@ def collect(destination: Path):
                 shutil.copy2(path, target)
                 count += 1
         if not count:
-            raise RuntimeError(f"No license files found for {name}; review before distributing.")
+            fallback = Path(__file__).resolve().parents[1] / "third_party" / f"{name}-{dist.version}-LICENSE"
+            if fallback.is_file():
+                (notices / name).mkdir(parents=True, exist_ok=True)
+                shutil.copy2(fallback, notices / name / "LICENSE")
+            else:
+                raise RuntimeError(f"No license files found for {name}; review before distributing.")
     base = Path(sys.base_prefix)
     python_license = base / "LICENSE.txt"
     if not python_license.exists():
@@ -44,6 +53,8 @@ def collect(destination: Path):
             raise RuntimeError(f"Missing Tcl/Tk notice: {name}")
         shutil.copy2(license_path, notices / f"{name}-license.terms")
     project = Path(__file__).resolve().parents[1]
+    for name in ("FFmpeg-LGPLv3", "FFmpeg-GPLv3", "additional-license-sources.json"):
+        shutil.copy2(project / "third_party" / name, notices / name)
     for name in ("LICENSE", "README.md", "THIRD_PARTY_NOTICES.md"):
         shutil.copy2(project / name, destination / name)
     installer = project / "scripts" / "安装FFmpeg.cmd"

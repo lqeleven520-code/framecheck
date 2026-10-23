@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "mode": "analyze",
+  "tool": "FrameCheck",
+  "version": "0.3.0",
+  "created_utc": "2026-10-23T02:16:35.330298+00:00",
+  "status": "COMPLETE",
+  "scope": "whole_video",
+  "source": {
+    "name": "synthetic-shots.mkv",
+    "bytes": 816416,
+    "width": 320,
+    "height": 180,
+    "rotation": 0,
+    "codec": "ffv1",
+    "pixel_format": "bgr0",
+    "fps": 16.0,
+    "nominal_fps": 16.0,
+    "duration": 6.001,
+    "stream_index": 0,
+    "color_transfer": null,
+    "audio_streams": 0,
+    "start_time": 0.0,
+    "sample_aspect_ratio": "1:1",
+    "format_start_time": 0.0,
+    "subtitle_streams": [],
+    "sha256": "0646e6f5b4446c456dc40debff5a3db7a63314024b7615908588db55c541cd1f"
+  },
+  "options": {
+    "threshold": 27.0,
+    "min_shot_seconds": 0.35,
+    "analysis_size": 480,
+    "motion_fps": 8.0,
+    "transcript": "auto",
+    "subtitle_stream": null,
+    "audio_stream": null,
+    "model": "base",
+    "language": null,
+    "offline": false,
+    "export_clips": false,
+    "max_frames": null
+  },
+  "shots": [
+    {
+      "id": 1,
+      "start_frame": 0,
+      "start_s": 0.0,
+      "cut_score": 0.0,
+      "keyframe": "keyframes/shot-0001.jpg",
+      "keyframe_time_s": 0.0,
+      "dialogue": [
+        0
+      ],
+      "end_frame_exclusive": 32,
+      "end_s": 2.0,
+      "duration_s": 2.0,
+      "motion": {
+        "method": "sparse_optical_flow_ransac_affine",
+        "sample_pairs": 15,
+        "valid_pairs": 15,
+        "kind": "static",
+        "confidence": 1.0,
+        "caveat": "2D image motion cannot distinguish camera movement, digital transforms or moving subjects.",
+        "label": "整体画面近似静止 / approximately static",
+        "median": {
+          "x_percent_per_s": 0.0,
+          "y_percent_per_s": 0.0,
+          "scale_percent_per_s": 0.0,
+          "rotation_deg_per_s": 0.0
+        }
+      }
+    },
+    {
+      "id": 2,
+      "start_frame": 32,
+      "start_s": 2.0,
+      "cut_score": 78.242,
+      "keyframe": "keyframes/shot-0002.jpg",
+      "keyframe_time_s": 2.0,
+      "dialogue": [
+        1
+      ],
+      "end_frame_exclusive": 64,
+      "end_s": 4.0,
+      "duration_s": 2.0,
+      "motion": {
+        "method": "sparse_optical_flow_ransac_affine",
+        "sample_pairs": 15,
+        "valid_pairs": 15,
+        "kind": "pan_right",
+        "confidence": 1.0,
+        "caveat": "2D image motion cannot distinguish camera movement, digital transforms or moving subjects.",
+        "label": "疑似向右摇摄或平移（画面左移） / possible pan right",
+        "median": {
+          "x_percent_per_s": -8.9786,
+          "y_percent_per_s": 0.004,
+          "scale_percent_per_s": 0.0412,
+          "rotation_deg_per_s": 0.0064
+        }
+      }
+    },
+    {
+      "id": 3,
+      "start_frame": 64,
+      "start_s": 4.0,
+      "cut_score": 76.287,
+      "keyframe": "keyframes/shot-0003.jpg",
+      "keyframe_time_s": 4.0,
+      "dialogue": [
+        2
+      ],
+      "end_frame_exclusive": 96,
+      "end_s": 6.0005,
+      "duration_s": 2.0005,
+      "motion": {
+        "method": "sparse_optical_flow_ransac_affine",
+        "sample_pairs": 15,
+        "valid_pairs": 15,
+        "kind": "zoom_in",
+        "confidence": 0.938,
+        "caveat": "2D image motion cannot distinguish camera movement, digital transforms or moving subjects.",
+        "label": "画面放大，疑似推进或变焦 / apparent zoom in",
+        "median": {
+          "x_percent_per_s": -0.0189,
+          "y_percent_per_s": 0.0064,
+          "scale_percent_per_s": 7.3707,
+          "rotation_deg_per_s": 0.0023
+        }
+      }
+    }
+  ],
+  "decoded_frames": 96,
+  "duration_s": 6.0005,
+  "warnings": [],
+  "transcript": {
+    "status": "extracted",
+    "source": "provided_srt",
+    "review_required": true,
+    "segments": [
+      {
+        "start_s": 0.2,
+        "end_s": 1.5,
+        "text": "这是合成字幕示例，不是语音识别结果。"
+      },
+      {
+        "start_s": 2.2,
+        "end_s": 3.5,
+        "text": "第二个镜头：整体画面向左移动。"
+      },
+      {
+        "start_s": 4.2,
+        "end_s": 5.6,
+        "text": "第三个镜头：画面逐渐放大。"
+      }
+    ]
+  },
+  "units": [
+    {
+      "id": 1,
+      "start_s": 0.0,
+      "end_s": 6.0005,
+      "duration_s": 6.0005,
+      "short_source_exception": false,
+      "speech_crosses_boundary": false,
+      "shots": [
+        {
+          "shot_id": 1,
+          "start_s": 0.0,
+          "end_s": 2.0,
+          "source_start_s": 0.0,
+          "source_end_s": 2.0,
+          "partial_original_shot": false
+        },
+        {
+          "shot_id": 2,
+          "start_s": 2.0,
+          "end_s": 4.0,
+          "source_start_s": 2.0,
+          "source_end_s": 4.0,
+          "partial_original_shot": false
+        },
+        {
+          "shot_id": 3,
+          "start_s": 4.0,
+          "end_s": 6.0005,
+          "source_start_s": 4.0,
+          "source_end_s": 6.0005,
+          "partial_original_shot": false
+        }
+      ],
+      "keyframes": {
+        "start": {
+          "path": "units/unit-0001-start.jpg",
+          "time_s": 0.0
+        },
+        "middle": {
+          "path": "units/unit-0001-middle.jpg",
+          "time_s": 3.063
+        },
+        "end": {
+          "path": "units/unit-0001-end.jpg",
+          "time_s": 5.938
+        }
+      },
+      "visual_style": "",
+      "references": {
+        "场景": "",
+        "出场人物": "",
+        "道具": ""
+      },
+      "first_frame_notes": "",
+      "last_frame_notes": ""
+    }
+  ],
+  "display_aspect": "16:9 横屏",
+  "limitations": [
+    "Cut detection is a heuristic. Fades, flashes, fast action and similar shots need review.",
+    "Motion labels describe estimated 2D image motion, not verified camera equipment or intent.",
+    "Transcripts require review. No speaker identification, lip reading or burned-in subtitle OCR."
+  ],
+  "source_first_pts_s": 0.0,
+  "final_frame_duration_estimated_s": 0.0625
+}

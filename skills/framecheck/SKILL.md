@@ -1,13 +1,15 @@
 ---
 name: framecheck
-description: Compare two local SDR videos frame by frame with FrameCheck and produce an offline HTML, CSV and JSON evidence report. Use for render/export regression checks, compression comparisons, frame-count or timing mismatches, and 视频逐帧对比、导出质检. This does not extract a video's story or shots, compare audio, or judge creative quality.
+description: Analyze a local SDR video into shots, estimated camera motion, timed dialogue and editable 4–15 second breakdowns, or compare two videos frame by frame. Use for 视频解析、拆分镜头、分析运镜、提取台词、视频逐帧对比 and export checks. Does not generate videos or supply a private production workflow.
 metadata:
-  version: "0.2.1"
+  version: "0.3.0"
 ---
 
-# FrameCheck video comparison
+# FrameCheck video analysis and comparison
 
 Use the FrameCheck source bundled in this skill to turn a reference/candidate pair into reproducible local evidence. The engine streams decoded RGB frames and actual presentation timestamps. Videos stay on the local machine. The runtime is inspectable Python source in `scripts/framecheck`; no separately downloaded FrameCheck wheel is required.
+
+For a single video, use the analysis workflow below. For a reference/candidate pair, use compare. The local engine measures evidence; an agent must actually inspect frames/clips before adding semantic descriptions.
 
 ## Setup
 
@@ -24,6 +26,8 @@ If NumPy or Pillow is absent, install this skill's `requirements.txt` into the c
 python -m pip install -r "<skill-directory>/requirements.txt"
 ```
 
+Single-video analysis additionally needs `requirements-analysis.txt` (OpenCV). Local speech recognition needs `requirements-speech.txt` (faster-whisper). Install these with the same `python -m pip install -r` pattern only in the selected environment.
+
 FFmpeg 5.1+ and ffprobe are external dependencies. Use the platform's package manager or the [official FFmpeg download links](https://ffmpeg.org/download.html). On Windows, `winget install --id Gyan.FFmpeg --exact` is supported. An explicit `--ffmpeg` path takes precedence; keep ffprobe beside it. Do not install into unrelated environments or change global configuration merely to run a comparison.
 
 For a self-contained first run, use a new output folder:
@@ -33,6 +37,25 @@ python "<skill-directory>/scripts/run_framecheck.py" demo --output framecheck-de
 ```
 
 This generates synthetic videos with an intentional changed region. A successful demo command exits 0 while its report says FAIL; that difference is expected and is explained in the command output.
+
+## Analyze one video
+
+Read [analysis guidance](references/analysis.md) for the per-unit output format, evidence checks and visual interpretation.
+
+```bash
+python "<skill-directory>/scripts/run_framecheck.py" analyze "video.mp4" -o "reports/analysis-001"
+python "<skill-directory>/scripts/run_framecheck.py" analyze-demo -o "analysis-demo-001"
+```
+
+Auto mode uses embedded text subtitles first, then local Whisper when audio exists. The first speech run downloads model weights from Hugging Face; use `--offline` for cached/local models only. Media is not uploaded by the CLI. `--subtitles file.srt` uses an existing UTF-8 SRT on the video's relative timeline; `--transcript none` intentionally skips dialogue. `--export-clips` creates an MP4 for each detected shot. The analysis demo uses synthetic geometry and supplied subtitles, not speech recognition.
+
+Read `analysis.json`, `storyboard.json` and the report. Analysis exits: 0 = COMPLETE for the requested processing, 1 = PARTIAL (for example transcription failed), 2 = error, 130 = cancelled. Completion does not establish semantic accuracy. Keep the actual aspect and source timing; delivery units are 4–15 seconds, while original shot times remain unchanged.
+
+The HTML report permits local note editing and export. To save an agent-reviewed result, copy `storyboard.json` to a new file, fill only supported text fields after inspection and render it:
+
+```bash
+python "<skill-directory>/scripts/run_framecheck.py" export-notes "storyboard-reviewed.json" -o "breakdown-reviewed.txt"
+```
 
 ## Compare the requested pair
 
@@ -53,9 +76,11 @@ Read `result.json` and the relevant rows of `frames.csv`; use `report.html` and 
 - Compare exits: 0 = PASS for the recorded scope; 1 = completed with differences; 2 = input/execution error; 130 = cancelled.
 - Report the recorded `status`, `scope`, compared frame counts, timing mismatches and concrete reasons. An execution error or cancellation is not a quality verdict.
 - Byte equality, decoded pixel equality and perceptual similarity are different facts. Infinite/undefined PSNR is represented as JSON null, with pixel equality recorded separately.
-- The engine rejects HDR PQ/HLG inputs. It does not compare audio or determine whether a creative change is good or bad.
+- The comparison engine rejects HDR PQ/HLG inputs. It does not compare audio waveforms or determine whether a creative change is good or bad. Analysis also requires SDR; it does not identify speakers or recover exact lenses.
 - Reports omit local absolute source paths, but contain file names, hashes and selected frames. Share a report or upload videos only within the user's requested scope; keep the whole report folder when sharing.
 
 Deliver a short finding with a usable report link and meaningful examples of detected differences. If only a range was checked or visual inspection was unavailable, say so. Keep the original videos and existing reports untouched.
+
+Reports contain screenshots and dialogue. Sharing them follows the user's intended scope. Agent visual-inspection tools follow the chosen provider's privacy rules separately from the local CLI. Do not import private skills, production rules or examples into this skill or distributable reports.
 
 Project and installation help: [FrameCheck](https://github.com/lqeleven520-code/framecheck), [public demo](https://lqeleven520-code.github.io/framecheck/demo.html).

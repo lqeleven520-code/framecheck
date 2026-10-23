@@ -1,6 +1,6 @@
 # 安装 FrameCheck 技能包 / Install the agent skill
 
-这个技能指导 AI 编程助手调用 FrameCheck，比对两段本地视频并解释报告。它不包含私人做剧流程，不拆解单个视频的剧情或分镜。
+这个技能指导助手解析单个视频的镜头、运镜和台词，按原视频比例输出4—15秒的逐片段解析，也能比对两段视频。它不包含私人做剧流程或视频接续方法。画面风格、动作、神态等内容需要助手实际查看画面后填写。
 
 ## 用 skills CLI 安装
 
@@ -20,9 +20,13 @@ npx skills add lqeleven520-code/framecheck --list
 
 > 使用 framecheck 比较这两个本地视频，参考视频是 A，待检视频是 B，把报告保存到一个新目录，并说明具体差异。
 
+单视频解析可这样使用：
+
+> 使用 framecheck 解析这个本地视频，拆镜头、估计运镜、提取台词。按原比例整理成4—15秒的单元，实际查看关键帧后补充画面内容，输出逐片段解析文本和报告。整体导演设计只保留画面风格，不加入视频衔接方法。
+
 ## 直接下载
 
-从 [Releases](https://github.com/lqeleven520-code/framecheck/releases) 下载 `framecheck-skill-0.2.1.zip`。解压后将其中的 `framecheck` 文件夹放进客户端支持的技能目录，再重新载入技能。里面包含 `SKILL.md`、可阅读的运行源码、Python 依赖声明、界面元数据和 MIT 许可。
+从 [Releases](https://github.com/lqeleven520-code/framecheck/releases) 下载 `framecheck-skill-0.3.0.zip`。解压后将其中的 `framecheck` 文件夹放进客户端支持的技能目录，再重新载入技能。里面包含 `SKILL.md`、可阅读的运行源码、Python 依赖声明、界面元数据和 MIT 许可。
 
 源码路径是 [`skills/framecheck`](../skills/framecheck)。不要把整个软件源码目录当作单个技能目录。
 
@@ -32,10 +36,16 @@ npx skills add lqeleven520-code/framecheck --list
 
 ```bash
 python -m pip install -r "技能目录/requirements.txt"
+python -m pip install -r "技能目录/requirements-analysis.txt"
+# 无现有字幕、需要本地语音识别时再安装：
+python -m pip install -r "技能目录/requirements-speech.txt"
 python "技能目录/scripts/run_framecheck.py" doctor --json
 python "技能目录/scripts/run_framecheck.py" demo -o framecheck-demo-001
+python "技能目录/scripts/run_framecheck.py" analyze-demo -o analysis-demo-001
 ```
 
 打开输出中的 `report/report.html`。示例故意加入红色色块，报告应发现差异；demo 命令正常结束返回 0。
+
+解析示例包含3个合成镜头和已有字幕，不下载语音模型。正式视频没有文字字幕时默认使用本地语音识别；首次下载模型，`--offline` 可限制为已缓存模型。CLI不会上传媒体；助手查看画面的隐私范围由所选客户端决定。具体选项见[解析说明](ANALYSIS.md)。
 
 Skills CLI is an independent open-source installer. Its current commands and supported agents are documented in [vercel-labs/skills](https://github.com/vercel-labs/skills). This project does not claim an official marketplace endorsement or guaranteed search-engine indexing.

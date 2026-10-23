@@ -13,3 +13,6 @@ Development used AI coding assistance. Maintainer review and the actual publishe
 ## Public agent skill
 
 The `skills/framecheck` package was written specifically for this public CLI. It includes inspectable copies of the public `src/framecheck` modules and a local entrypoint, synchronized by `scripts/sync_agent_skill.py` and checked in tests. It does not fetch a separate FrameCheck runtime. It does not include personal creative workflows, a private skill library, private videos or application/account material.
+## Video analysis added in 0.3.0
+
+Shot detection, motion estimation, transcript orchestration, editable notes and delivery-unit code were independently implemented for this public project using public OpenCV, FFmpeg and faster-whisper interfaces. The general observation fields do not include a private production framework or proprietary video continuation method. All bundled demo media is synthetic. No private story examples, skill documents, personal knowledge bases or user media are included.

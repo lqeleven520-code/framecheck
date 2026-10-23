@@ -20,7 +20,7 @@ class App:
         import tkinter as tk
         from tkinter import ttk
         self.tk, self.ttk, self.root = tk, ttk, root
-        root.title("FrameCheck · 视频对比与质检")
+        root.title("FrameCheck · 视频对比与解析")
         root.geometry("880x740")
         root.minsize(760, 680)
         root.configure(bg="#f2f5f7")
@@ -36,6 +36,7 @@ class App:
         frame.pack(fill="both", expand=True)
         frame.columnconfigure(1, weight=1)
         ttk.Label(frame, text="FrameCheck", style="Title.TLabel").grid(row=0, column=0, columnspan=3, sticky="w")
+        ttk.Button(frame, text="解析单个视频 →", command=self.open_analysis).grid(row=0, column=2, sticky="e")
         ttk.Label(frame, text="比较每一帧，定位差异，生成离线报告。视频始终留在本机。",
                   style="Muted.TLabel").grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 22))
         self.reference = tk.StringVar()
@@ -107,6 +108,11 @@ class App:
             value = filedialog.askopenfilename(parent=self.root, filetypes=types if kind == "video" else [("FFmpeg", "*")])
         if value:
             variable.set(value)
+
+    def open_analysis(self):
+        from .analysis_gui import AnalysisApp
+        window = self.tk.Toplevel(self.root)
+        AnalysisApp(window)
 
     def start(self):
         from tkinter import messagebox

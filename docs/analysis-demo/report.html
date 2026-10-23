@@ -1,0 +1,130 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FrameCheck 视频解析 · synthetic-shots.mkv</title><style>
+    *{box-sizing:border-box}body{margin:0;background:#f3f6f8;color:#203247;font:16px/1.6 system-ui,sans-serif}
+    main{max-width:1100px;margin:auto;padding:32px 22px}header{margin-bottom:28px}h1{font-size:34px;line-height:1.25}
+    h2{font-size:23px;margin:0 0 10px}a{color:#087d73}nav{display:flex;flex-wrap:wrap;gap:18px}
+    article{display:grid;grid-template-columns:minmax(240px,42%) 1fr;gap:25px;background:white;border:1px solid #dce4e8;
+    border-radius:15px;margin:20px 0;padding:22px}img{width:100%;height:auto;border-radius:8px}p{margin:8px 0}
+    .muted{color:#637487;font-size:13px}.time,time{font-variant-numeric:tabular-nums}.status{display:inline-block;
+    border-radius:6px;padding:4px 10px;background:#d7eee7;color:#205a47;font-weight:700}.notice{background:#fff2d6;
+    border-left:4px solid #bb8021;padding:13px;overflow-wrap:anywhere}.dialogue{border-top:1px solid #e5eaee;margin:12px 0;
+    padding-top:10px;white-space:pre-wrap}li{margin:7px 0}code{overflow-wrap:anywhere}
+    textarea{display:block;width:100%;font:inherit;padding:8px;border:1px solid #b9c9d3;border-radius:5px}
+    label{display:block;margin:12px 0}button{padding:9px 15px;margin:8px 8px 8px 0;cursor:pointer}
+    .unit{padding:22px;background:white;border-radius:12px;margin:20px 0}.gallery{display:grid;
+    grid-template-columns:repeat(3,1fr);gap:12px}figure{margin:0}figcaption{font-size:12px;color:#637487}
+    @media(max-width:720px){article{grid-template-columns:1fr}main{padding:20px 14px}h1{font-size:28px}}
+    </style><main><header><p>FRAMECHECK 0.3.0 · 本地视频解析 / Local video analysis</p>
+    <h1>synthetic-shots.mkv</h1><span class="status">COMPLETE</span>
+    <p>3 个检测镜头 · 96 帧 · 6.00 秒 ·
+    范围 / Scope: whole_video</p><p>台词来源 / Transcript source: <strong>provided_srt</strong> ·
+    状态 / Status: extracted</p>
+    <p class="notice">镜头边界与运镜属于自动估计，请结合画面核对；台词可能有错字、漏字。COMPLETE 表示所选处理流程完成，
+    不代表内容经过人工验收。这里不生成剧情、私人制作流程或复刻提示词。</p>
+    <nav><a href="analysis.json">JSON</a><a href="shots.csv">镜头表 CSV</a><a href="motion.csv">运动证据 CSV</a>
+    <a href="transcript.srt">字幕 SRT</a><a href="transcript.txt">台词 TXT</a>
+    <a href="storyboard.md">解析镜头表 Markdown</a><a href="storyboard.csv">解析镜头表 CSV</a>
+    <a href="breakdown.txt">逐片段解析 TXT</a></nav>
+    <p class="muted">展开每个镜头的“补充视觉解析”可填写画面、动作、神态和光影。空白表示未分析，不能当作识别结论。
+    修改只留在当前页面，关闭前请导出。</p>
+    <button id="save-breakdown">导出逐片段解析</button><button id="save-notes-md">导出编辑后的镜头表</button>
+    <button id="save-notes-json">导出编辑数据 JSON</button>
+    <p id="save-status" class="muted" role="status"></p></header>
+    <h2>按 4—15 秒组织的解析单元</h2><p class="muted">按原视频实际比例与时间整理，优先选择切点。原视频不足4秒时保留真实时长。
+    下方仍保留原始镜头边界，不把每个镜头硬改成固定长度。</p><section class="unit" id="unit-1"><h2>解析片段 01 · 6.00 秒</h2><p>00:00:00.000 → 00:00:06.000 · 16:9 横屏</p><div class="gallery"><figure><img src="units/unit-0001-start.jpg" alt="片段 1 start"><figcaption>start · 00:00:00.000</figcaption></figure><figure><img src="units/unit-0001-middle.jpg" alt="片段 1 middle"><figcaption>middle · 00:00:03.063</figcaption></figure><figure><img src="units/unit-0001-end.jpg" alt="片段 1 end"><figcaption>end · 00:00:05.938</figcaption></figure></div><details><summary>画面风格与片段观察备注</summary><div class="unit-notes"></div></details></section>
+    <h2>原始镜头与台词</h2><article id="shot-1"><div><img src="keyframes/shot-0001.jpg"
+          alt="镜头 1 的第一帧" loading="lazy"><p class="muted">第一帧 / First frame ·
+          00:00:00.000</p></div><div><h2>镜头 / Shot 001</h2>
+          <p class="time">00:00:00.000 → 00:00:02.000 ·
+          2.00 s</p><p><strong>整体画面近似静止 / approximately static</strong></p>
+          <p class="muted">拟合支持分数 / Fit support: 1.00 ·
+          15/15 有效采样对
+          （不是正确率 / not accuracy）</p><div class="dialogue"><p><time>00:00:00.200</time> 这是合成字幕示例，不是语音识别结果。</p></div>
+          <details><summary>补充视觉解析 / Edit shot notes</summary><div class="notes"></div></details>
+          </div></article><article id="shot-2"><div><img src="keyframes/shot-0002.jpg"
+          alt="镜头 2 的第一帧" loading="lazy"><p class="muted">第一帧 / First frame ·
+          00:00:02.000</p></div><div><h2>镜头 / Shot 002</h2>
+          <p class="time">00:00:02.000 → 00:00:04.000 ·
+          2.00 s</p><p><strong>疑似向右摇摄或平移（画面左移） / possible pan right</strong></p>
+          <p class="muted">拟合支持分数 / Fit support: 1.00 ·
+          15/15 有效采样对
+          （不是正确率 / not accuracy）</p><div class="dialogue"><p><time>00:00:02.200</time> 第二个镜头：整体画面向左移动。</p></div>
+          <details><summary>补充视觉解析 / Edit shot notes</summary><div class="notes"></div></details>
+          </div></article><article id="shot-3"><div><img src="keyframes/shot-0003.jpg"
+          alt="镜头 3 的第一帧" loading="lazy"><p class="muted">第一帧 / First frame ·
+          00:00:04.000</p></div><div><h2>镜头 / Shot 003</h2>
+          <p class="time">00:00:04.000 → 00:00:06.000 ·
+          2.00 s</p><p><strong>画面放大，疑似推进或变焦 / apparent zoom in</strong></p>
+          <p class="muted">拟合支持分数 / Fit support: 0.94 ·
+          15/15 有效采样对
+          （不是正确率 / not accuracy）</p><div class="dialogue"><p><time>00:00:04.200</time> 第三个镜头：画面逐渐放大。</p></div>
+          <details><summary>补充视觉解析 / Edit shot notes</summary><div class="notes"></div></details>
+          </div></article><details><summary>方法、限制与执行提示 / Methods & limitations</summary><ul><li>Cut detection is a heuristic. Fades, flashes, fast action and similar shots need review.</li><li>Motion labels describe estimated 2D image motion, not verified camera equipment or intent.</li><li>Transcripts require review. No speaker identification, lip reading or burned-in subtitle OCR.</li></ul>
+    <p>Source SHA-256: <code>0646e6f5b4446c456dc40debff5a3db7a63314024b7615908588db55c541cd1f</code></p>
+    <p>基于逐帧 HSV 变化检测硬切；稀疏光流与 RANSAC 估计整体画面运动。快速运动、闪光、叠化、移动主体、
+    遮挡或低纹理画面均可能影响结果。镜头末帧时长依据相邻时间戳估计。</p></details>
+    <footer class="muted">视频处理留在本机。分享此报告会公开文件名、关键帧及台词，请按需分享整个目录。</footer>
+    </main><script type="application/json" id="storyboard-data">{"schema_version": 1, "source_name": "synthetic-shots.mkv", "source_sha256": "0646e6f5b4446c456dc40debff5a3db7a63314024b7615908588db55c541cd1f", "aspect": "16:9 横屏", "units": [{"id": 1, "start_s": 0.0, "end_s": 6.0005, "duration_s": 6.0005, "short_source_exception": false, "speech_crosses_boundary": false, "shots": [{"shot_id": 1, "start_s": 0.0, "end_s": 2.0, "source_start_s": 0.0, "source_end_s": 2.0, "partial_original_shot": false}, {"shot_id": 2, "start_s": 2.0, "end_s": 4.0, "source_start_s": 2.0, "source_end_s": 4.0, "partial_original_shot": false}, {"shot_id": 3, "start_s": 4.0, "end_s": 6.0005, "source_start_s": 4.0, "source_end_s": 6.0005, "partial_original_shot": false}], "keyframes": {"start": {"path": "units/unit-0001-start.jpg", "time_s": 0.0}, "middle": {"path": "units/unit-0001-middle.jpg", "time_s": 3.063}, "end": {"path": "units/unit-0001-end.jpg", "time_s": 5.938}}, "visual_style": "", "references": {"场景": "", "出场人物": "", "道具": ""}, "first_frame_notes": "", "last_frame_notes": ""}], "transcript_source": "provided_srt", "notice": "空白视觉字段表示未分析。可结合关键帧/片段填写；运镜为估计，台词需核对。", "shots": [{"shot": 1, "start_s": 0.0, "end_s": 2.0, "keyframe": "keyframes/shot-0001.jpg", "fields": {"景别／视角": "", "机位／运镜": "整体画面近似静止 / approximately static", "摄影参数": "320×180；16.000 fps；焦段、光圈与机位未测定", "画面内容": "", "人物动作": "", "人物神态": "", "台词／声音": "这是合成字幕示例，不是语音识别结果。", "场景光影": ""}, "motion_source": "algorithm_estimate", "dialogue_source": "provided_srt"}, {"shot": 2, "start_s": 2.0, "end_s": 4.0, "keyframe": "keyframes/shot-0002.jpg", "fields": {"景别／视角": "", "机位／运镜": "疑似向右摇摄或平移（画面左移） / possible pan right", "摄影参数": "320×180；16.000 fps；焦段、光圈与机位未测定", "画面内容": "", "人物动作": "", "人物神态": "", "台词／声音": "第二个镜头：整体画面向左移动。", "场景光影": ""}, "motion_source": "algorithm_estimate", "dialogue_source": "provided_srt"}, {"shot": 3, "start_s": 4.0, "end_s": 6.0005, "keyframe": "keyframes/shot-0003.jpg", "fields": {"景别／视角": "", "机位／运镜": "画面放大，疑似推进或变焦 / apparent zoom in", "摄影参数": "320×180；16.000 fps；焦段、光圈与机位未测定", "画面内容": "", "人物动作": "", "人物神态": "", "台词／声音": "第三个镜头：画面逐渐放大。", "场景光影": ""}, "motion_source": "algorithm_estimate", "dialogue_source": "provided_srt"}]}</script>
+    <script>
+const data = JSON.parse(document.getElementById('storyboard-data').textContent);
+const names = ['景别／视角','机位／运镜','摄影参数','画面内容','人物动作','人物神态','台词／声音','场景光影'];
+for (const unit of data.units) {
+  const box = document.querySelector('#unit-' + unit.id + ' .unit-notes');
+  const fields = [['画面风格',unit,'visual_style'],['场景',unit.references,'场景'],
+    ['出场人物',unit.references,'出场人物'],['道具',unit.references,'道具'],
+    ['首帧可见空间与主体',unit,'first_frame_notes'],['末帧可见画面',unit,'last_frame_notes']];
+  for (const [name, target, key] of fields) {
+    const label = document.createElement('label'); label.textContent = name;
+    const input = document.createElement('textarea'); input.rows = 2; input.value = target[key];
+    input.placeholder = '仅填写从画面实际观察到的内容';
+    input.addEventListener('input', () => { target[key] = input.value; });
+    label.appendChild(input); box.appendChild(label);
+  }
+}
+for (const shot of data.shots) {
+  const box = document.querySelector('#shot-' + shot.shot + ' .notes');
+  for (const name of names) {
+    const label = document.createElement('label'); label.textContent = name;
+    const input = document.createElement('textarea'); input.rows = 2; input.value = shot.fields[name];
+    input.placeholder = '未自动分析，可根据画面补充 / Optional visual note';
+    input.addEventListener('input', () => { shot.fields[name] = input.value; });
+    label.appendChild(input); box.appendChild(label);
+  }
+}
+function download(name, type, text) {
+  const url = URL.createObjectURL(new Blob([text], {type}));
+  const link = document.createElement('a'); link.href = url; link.download = name; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  document.getElementById('save-status').textContent = '已发起下载；请保留下载文件。页面关闭后不会保存未导出的修改。';
+}
+document.getElementById('save-notes-json').onclick = () => download('storyboard-edited.json','application/json',JSON.stringify(data,null,2));
+document.getElementById('save-breakdown').onclick = () => {
+  const blocks = [], shots = new Map(data.shots.map(s => [s.shot,s]));
+  for (const unit of data.units) {
+    const lines = ['【视频解析｜片段' + unit.id + '】','源视频区间：' + unit.start_s + '—' + unit.end_s + '秒',
+      '画幅：' + data.aspect,'总时长：' + unit.duration_s + '秒','台词来源：' + data.transcript_source,'','【整体导演设计】',
+      '画面风格：' + (unit.visual_style || '未作视觉判读'),'','【参考对象】',
+      ...Object.entries(unit.references).map(([k,v]) => k + '：' + (v || '未作视觉判读')),'',
+      '【空间与首帧】','首帧可见空间与主体：' + (unit.first_frame_notes || '未作视觉判读'),'','【分镜时间轴】'];
+    unit.shots.forEach((fragment,index) => {
+      const shot = shots.get(fragment.shot_id);
+      lines.push('镜号' + (index+1) + '｜时间：' + fragment.start_s + '—' + fragment.end_s + '秒',
+        ...names.map(name => name + '：' + (shot.fields[name] || '未作视觉判读')),'');
+    });
+    lines.push('【本片段结束画面】','末帧可见画面：' + (unit.last_frame_notes || '未作视觉判读'));
+    if (unit.short_source_exception) lines.push('注：原视频不足4秒，保留实际时长。');
+    if (unit.speech_crosses_boundary) lines.push('注：台词跨越片段边界，请按原字幕时间轴核对。');
+    blocks.push(lines.join('\n'));
+  }
+  download('breakdown-edited.txt','text/plain',blocks.join('\n\n'));
+};
+document.getElementById('save-notes-md').onclick = () => {
+  const lines = ['# 视频解析镜头表','',data.notice,''];
+  for (const shot of data.shots) {
+    lines.push('## 镜号 ' + shot.shot + ' · ' + shot.start_s + ' → ' + shot.end_s + ' 秒','');
+    for (const name of names) lines.push('**' + name + '**','',...(shot.fields[name] || '未标注').split('\n').map(t => '    ' + t),'');
+  }
+  download('storyboard-edited.md','text/markdown',lines.join('\n'));
+};
+</script></html>

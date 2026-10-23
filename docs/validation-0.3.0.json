@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-23",
+  "version": "0.3.0",
+  "local_tests_passed": 59,
+  "ruff": "PASS",
+  "frozen_windows_bundle": {
+    "engine": "PASS",
+    "gui_worker": "PASS",
+    "frames": 4,
+    "gui_demo": "PASS",
+    "demo_frames": 24,
+    "analysis_gui": "PASS",
+    "analysis_shots": 3,
+    "synthetic_media_only": true
+  },
+  "speech": "Actual local CPU inference on English/Chinese synthetic voices and a non-zero source timeline; final executable also tested.",
+  "demo": "96 generated frames, three known cuts, static/left translation/zoom labels and supplied SRT verified.",
+  "format": "Original display aspect; 4–15 second units; overall design includes visual style only; no continuation or production handoffs.",
+  "privacy": "Public text scan passed; no private skill documents, user video, story examples, email or local machine path.",
+  "browser": "Editable notes and actual TXT download verified in the in-app browser.",
+  "cross_platform_ci": "See Actions for the current commit; local results do not imply hosted CI success.",
+  "independent_adoption": "Not established; these are maintainer tests.",
+  "fresh_wheel_install": "PASS: comparison, analysis and real local speech",
+  "standalone_skill": "PASS: no FrameCheck distribution installed; comparison, analysis and local Chinese speech"
+}

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eleven-framecheck"
-version = "0.2.1"
-description = "Local video comparison with frame-level evidence and offline HTML reports"
+version = "0.3.0"
+description = "Local video comparison, shot detection, motion estimates and dialogue transcription"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -23,6 +23,8 @@ classifiers = [
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "build>=1.2,<2", "ruff>=0.9,<1"]
 bundle = ["pyinstaller>=6.10,<7"]
+analysis = ["opencv-python-headless>=4.10,<5"]
+speech = ["faster-whisper>=1.2,<2"]
 
 [project.scripts]
 framecheck = "framecheck.cli:main"

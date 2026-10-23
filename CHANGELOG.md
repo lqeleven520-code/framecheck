@@ -27,3 +27,10 @@
 - Chinese desktop UI, CLI with documented exit codes and explicit partial-run scope.
 - Offline bilingual HTML report, difference previews, CSV and JSON.
 - Synthetic-media regression tests and cross-platform CI configuration.
+# 0.3.0 — Video analysis
+
+- Add single-video shot detection, local motion estimates and optional MP4 shot export.
+- Extract embedded or supplied text subtitles; add local CPU Whisper transcription with cancellation and an offline option.
+- Add editable shot notes and per-unit text export. Units follow actual aspect and timing, normally 4–15 seconds; the overall-design section contains only visual style. No production handoffs or video continuation methods.
+- Add a desktop analysis window, synthetic example, agent analysis guidance and standalone skill dependencies.
+- Preserve double-video comparison behavior. Record incomplete transcription as PARTIAL rather than reporting success.

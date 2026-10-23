@@ -57,8 +57,31 @@ def run(output: Path) -> int:
             app.worker.join(timeout=5)
         root.after_cancel(app.poll_id)
         root.destroy()
+    from .analysis_gui import AnalysisApp
+    analysis_root = tk.Tk()
+    analysis_root.withdraw()
+    analysis_app = AnalysisApp(analysis_root)
+    try:
+        analysis_app.destination.set(str(output / "analysis-gui"))
+        analysis_app.start_demo()
+        deadline = time.monotonic() + 60
+        while analysis_app.running and time.monotonic() < deadline:
+            analysis_root.update()
+            time.sleep(0.01)
+        if analysis_app.running or not analysis_app.last_report:
+            raise RuntimeError("Frozen analysis GUI did not finish.")
+        analysis_result = json.loads((analysis_app.last_report.parent / "analysis.json").read_text(encoding="utf-8"))
+        if analysis_result["status"] != "COMPLETE" or len(analysis_result["shots"]) != 3:
+            raise RuntimeError("Frozen analysis GUI did not detect the known shots.")
+    finally:
+        analysis_app.cancel_event.set()
+        if hasattr(analysis_app, "worker"):
+            analysis_app.worker.join(timeout=5)
+        analysis_root.after_cancel(analysis_app.poll_id)
+        analysis_root.destroy()
     (output / "self-test.json").write_text(json.dumps({"engine": "PASS", "gui_worker": "PASS",
                                                      "frames": 4, "gui_demo": "PASS", "demo_frames": 24,
+                                                     "analysis_gui": "PASS", "analysis_shots": 3,
                                                      "synthetic_media_only": True}, indent=2)
                                           + "\n", encoding="utf-8")
     return 0

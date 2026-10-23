@@ -3,7 +3,7 @@
 FrameCheck compares a reference and candidate video locally. It is useful for checking a render/export revision and recording reproducible technical differences.
 
 1. Install Python 3.10+ and FFmpeg (including ffprobe).
-2. In a virtual environment, install the [released wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.2.1/eleven_framecheck-0.2.1-py3-none-any.whl), or run `python -m pip install .` from the repository.
+2. In a virtual environment, install the [released wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/eleven_framecheck-0.3.0-py3-none-any.whl), or run `python -m pip install .` from the repository.
 3. Run `framecheck doctor`, then `framecheck demo -o demo-001` for a complete synthetic example.
 4. Open `demo-001/report/report.html`. The deliberate changed region produces FAIL in the report; the demo command exits 0 on successful demonstration.
 5. Check your own pair with `framecheck compare reference.mp4 candidate.mp4 -o reports/first`. Keep the report folder intact when sharing.

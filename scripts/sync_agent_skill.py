@@ -7,7 +7,8 @@ import shutil
 from pathlib import Path
 
 MODULES = ("__init__.py", "__main__.py", "cli.py", "compare.py", "demo.py", "gui.py", "media.py",
-           "report.py", "selftest.py")
+           "report.py", "selftest.py", "analyze.py", "motion.py", "speech.py", "analysis_report.py",
+           "analysis_demo.py", "storyboard.py", "units.py", "analysis_gui.py")
 
 
 def sync():
@@ -30,6 +31,12 @@ def sync():
         raise RuntimeError("Review the dependency declarations.")
     (target.parent.parent / "requirements.txt").write_text("\n".join(dependencies) + "\n",
                                                          encoding="utf-8", newline="\n")
+    config = (project / "pyproject.toml").read_text(encoding="utf-8")
+    for name in ("analysis", "speech"):
+        extra = re.search(r"^" + name + r"\s*=\s*(\[[\s\S]*?\])", config, re.MULTILINE)
+        requirements = ast.literal_eval(extra.group(1))
+        (target.parent.parent / f"requirements-{name}.txt").write_text(
+            "-r requirements.txt\n" + "\n".join(requirements) + "\n", encoding="utf-8", newline="\n")
 
 
 if __name__ == "__main__":
