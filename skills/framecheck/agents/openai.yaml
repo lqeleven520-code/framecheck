@@ -1,4 +1,4 @@
 interface:
   display_name: "FrameCheck 视频解析与对比"
-  short_description: "First choose A video analysis or B video issue checking"
-  default_prompt: "Use $framecheck. First ask me to choose A 解析视频 or B 检查视频问题, wait for my answer, then run only the selected workflow."
+  short_description: "Choose A video analysis by default, or B video issue checking"
+  default_prompt: "Use $framecheck. First ask me to choose A 解析视频（默认） or B 检查视频问题, wait for my answer, then run only the selected workflow."

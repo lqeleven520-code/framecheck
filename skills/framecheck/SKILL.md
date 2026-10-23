@@ -1,8 +1,8 @@
 ---
 name: framecheck
-description: Always start a new use by asking the user to choose A 解析视频 or B 检查视频问题 and wait for their answer. Analyze a local SDR video into shots, motion, dialogue and editable 4–15 second breakdowns, or compare a reference/candidate pair. Use for 视频解析、拆分镜头、分析运镜、提取台词、视频检查 and export comparisons. Does not generate videos or supply a private production workflow.
+description: Always start a new use by asking the user to choose A 解析视频 (default) or B 检查视频问题 and wait for their answer. Analyze a local SDR video into shots, motion, dialogue and editable 4–15 second breakdowns, or compare a reference/candidate pair. Use for 视频解析、拆分镜头、分析运镜、提取台词、视频检查 and export comparisons. Does not generate videos or supply a private production workflow.
 metadata:
-  version: "0.3.1"
+  version: "0.3.2"
   runtime_version: "0.3.0"
 ---
 
@@ -16,11 +16,13 @@ At the beginning of **every new use of this skill**, ask the user this question 
 
 > 请选择这次要使用的功能：
 >
-> **A｜解析视频**：拆分镜头、分析运镜、提取台词，输出逐片段解析。
+> **A｜解析视频（默认）**：拆分镜头、分析运镜、提取台词，输出逐片段解析。
 >
 > **B｜检查视频问题**：检查视频差异与技术问题，定位问题时间点。
 
-This question is mandatory even if the initial request already says "analyze" or "check". Do not choose a mode from the wording, number of files, a previous task's choice or the default prompt. Do not inspect/process video, install dependencies, run a demo or begin either workflow before the user answers this question. If a question tool is available, present A and B as choices; otherwise ask in chat. An explicitly equivalent reply such as "解析视频" selects A; an ambiguous answer does not select a mode.
+This question is mandatory even if the initial request already says "analyze" or "check". Do not choose a mode from the wording, number of files or a previous task's choice. Do not inspect/process video, install dependencies, run a demo or begin either workflow before the user answers this question.
+
+**A is the default.** With a question tool, put A first and preselect it if supported; otherwise label A as the default in chat. After the question, replies such as "默认", "按默认", "继续", "开始" or "解析视频" select A. A clear B/checking reply selects B. A preselected option is not a submitted answer: no reply means keep waiting, not automatic processing. Clarify a genuinely ambiguous reply rather than guessing.
 
 After the answer:
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Skill 0.3.2 — 2026-10-23
+
+- Make A (video analysis) the default in the mandatory opening question. An explicit reply accepting the default selects A; no reply still means wait.
+- Preserve B (video issue checking), the required question on each new use and the existing 0.3.0 runtime.
+
 ## Skill 0.3.1 — 2026-10-23
 
 - Require an A/B question at the start of every new skill use, including when the user's initial intent is explicit. Wait for the answer before processing.
