@@ -1,15 +1,33 @@
 ---
 name: framecheck
-description: Analyze a local SDR video into shots, estimated camera motion, timed dialogue and editable 4–15 second breakdowns, or compare two videos frame by frame. Use for 视频解析、拆分镜头、分析运镜、提取台词、视频逐帧对比 and export checks. Does not generate videos or supply a private production workflow.
+description: Always start a new use by asking the user to choose A 解析视频 or B 检查视频问题 and wait for their answer. Analyze a local SDR video into shots, motion, dialogue and editable 4–15 second breakdowns, or compare a reference/candidate pair. Use for 视频解析、拆分镜头、分析运镜、提取台词、视频检查 and export comparisons. Does not generate videos or supply a private production workflow.
 metadata:
-  version: "0.3.0"
+  version: "0.3.1"
+  runtime_version: "0.3.0"
 ---
 
 # FrameCheck video analysis and comparison
 
-Use the FrameCheck source bundled in this skill to turn a reference/candidate pair into reproducible local evidence. The engine streams decoded RGB frames and actual presentation timestamps. Videos stay on the local machine. The runtime is inspectable Python source in `scripts/framecheck`; no separately downloaded FrameCheck wheel is required.
+Use the inspectable FrameCheck source bundled in `scripts/framecheck` for local video analysis or pair comparison. No separately downloaded FrameCheck wheel is required.
 
-For a single video, use the analysis workflow below. For a reference/candidate pair, use compare. The local engine measures evidence; an agent must actually inspect frames/clips before adding semantic descriptions.
+## Required first step: ask A or B
+
+At the beginning of **every new use of this skill**, ask the user this question and wait for their response:
+
+> 请选择这次要使用的功能：
+>
+> **A｜解析视频**：拆分镜头、分析运镜、提取台词，输出逐片段解析。
+>
+> **B｜检查视频问题**：检查视频差异与技术问题，定位问题时间点。
+
+This question is mandatory even if the initial request already says "analyze" or "check". Do not choose a mode from the wording, number of files, a previous task's choice or the default prompt. Do not inspect/process video, install dependencies, run a demo or begin either workflow before the user answers this question. If a question tool is available, present A and B as choices; otherwise ask in chat. An explicitly equivalent reply such as "解析视频" selects A; an ambiguous answer does not select a mode.
+
+After the answer:
+
+- **A:** use `analyze` and the analysis guidance. The engine measures evidence; semantic descriptions require actual visual inspection.
+- **B:** use `compare` for a reference/candidate pair. The current engine checks visual differences, frame counts and timing. If the required pair or its reference order is missing, explain this scope and request the missing input. Do not silently switch to A or claim comprehensive single-video problem detection.
+
+Keep that choice while completing the same requested job, including its internal steps. A new use starts with the question again; do not reuse a previous job's choice.
 
 ## Setup
 

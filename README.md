@@ -14,7 +14,7 @@ Analyze a single SDR video into shots, estimated camera motion, timed dialogue a
 | --- | --- |
 | Windows 桌面工具 | [下载 Windows x64 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/FrameCheck-0.3.0-windows-x64.zip) |
 | 先了解报告 | [无需安装，查看真实合成示例](https://lqeleven520-code.github.io/framecheck/demo.html) |
-| Codex / Claude Code 技能 | [安装说明](docs/INSTALL_SKILL.md) · [技能 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/framecheck-skill-0.3.0.zip) |
+| Codex / Claude Code 技能 | [安装说明](docs/INSTALL_SKILL.md) · [技能 ZIP](https://github.com/lqeleven520-code/framecheck/releases/download/skill-v0.3.1/framecheck-skill-0.3.1.zip) |
 | Python CLI / 自动化 | [下载 wheel](https://github.com/lqeleven520-code/framecheck/releases/download/v0.3.0/eleven_framecheck-0.3.0-py3-none-any.whl) |
 
 支持单视频解析，也保留导出版本对比、压缩检查与渲染回归测试。运镜属于可核对的图像运动估计；画面内容、人物动作等语义字段由用户或具备视觉能力的助手结合实际画面补充。
@@ -117,6 +117,8 @@ Output directories must be new. The app never deletes or overwrites existing rep
 Exit codes: **0** = metrics within thresholds for the stated scope; **1** = completed with differences; **2** = execution/input error; **130** = interrupted/cancelled. `PASS` on a partial run is not acceptance of the full file.
 
 ## Agent skill / 安装技能
+
+**技能包0.3.1：每次新任务必须先选A/B。** 助手首先询问“A｜解析视频”或“B｜检查视频问题”，等待用户回答后才开始，即使原始需求已写明用途也必须询问。同一任务的内部步骤不重复问，新任务重新选择。B当前使用参考视频与待检视频进行技术对比；附带的处理程序仍为0.3.0。
 
 With Node.js 22.20+, run this in the project where you want the skill:
 

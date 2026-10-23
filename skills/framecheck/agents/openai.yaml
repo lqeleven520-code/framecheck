@@ -1,4 +1,4 @@
 interface:
   display_name: "FrameCheck 视频解析与对比"
-  short_description: "Analyze shots, motion and dialogue, or compare local videos"
-  default_prompt: "Use $framecheck to analyze my video into 4–15 second units with shots, motion and dialogue, preserving its aspect ratio and explaining uncertainty."
+  short_description: "First choose A video analysis or B video issue checking"
+  default_prompt: "Use $framecheck. First ask me to choose A 解析视频 or B 检查视频问题, wait for my answer, then run only the selected workflow."

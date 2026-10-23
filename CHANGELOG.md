@@ -1,5 +1,11 @@
 # Changelog
 
+## Skill 0.3.1 — 2026-10-23
+
+- Require an A/B question at the start of every new skill use, including when the user's initial intent is explicit. Wait for the answer before processing.
+- Route A to analysis and B to reference/candidate technical comparison; explain missing inputs instead of silently switching modes.
+- Update the skill's default prompt, installation guide and download links. Bundled runtime remains FrameCheck 0.3.0; this release changes agent instructions, not the CLI or desktop behavior.
+
 ## 0.2.1 — 2026-10-23
 
 - Bundle inspectable FrameCheck source in the agent skill, with a local entrypoint and dependency file; remove the separate FrameCheck wheel download from the skill workflow.
